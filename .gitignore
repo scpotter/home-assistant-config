@@ -1,0 +1,58 @@
+# Ignore everything! Remove this when everything else is safe
+ *
+# Explicitly INCLUDE this file, all YAML and known configurations
+!.gitignore
+!*.yaml
+!*.md
+!*.sh
+!*.js*
+!python_scripts/**
+# But not these YAML known to contain sensitive data/credentials
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml
+auth*
+onboarding*
+
+# IN CASE THE BLANKET * IS REMOVED
+# Ignore system generated files/folders
+*.log
+*.db
+*.db-shm
+*.db-wal
+*.pyc
+._*
+__pycache__
+home-assistant_v2.db*
+
+
+# Ignore Folders known to contain sensitive data/credentials
+.cloud/
+.google.token
+.ssh/
+.storage/
+.backups/
+*.pem
+*.crt
+*.key
+
+
+# Ignore ESPHome config becasue it's a separate repo
+esphome/
+
+# Ignore transient caches
+tts/
+deps/
+
+# Ignore because everyone else does, only applies to harmony in root. 
+*.conf
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore all custom components by default
+!custom_components/
+custom_components/**
+# But explicitly include specific ones you want to track
+#!custom_components/SAMPLE/**
+# (add more as needed)

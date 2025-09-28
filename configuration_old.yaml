@@ -1,0 +1,44 @@
+homeassistant:
+  customize: !include customize.yaml
+default_config:
+
+automation: !include automations.yaml
+group: !include groups.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+### PIONEER AVR SC-71 ##########################################################
+# https://www.home-assistant.io/integrations/pioneer/
+# Hardware: AVR Control inputs
+### SC71 Zone 1 = Lounge (Zone 2 = Deck, HDZone = Unused)
+#
+# Input Details:
+#   HDMI inputs = 8x (including BD and Front)
+#   Composite input (red/white/yellow) = DVR/BDR only
+#   RCA audio (red/white) = CD only
+#   Optical Audio   = 2x assignable
+#   Coax Audio      = 2x assignable
+#
+# Speakers: 9.2 Channels
+#
+# Controls: HDMI 1 and HDMI CD, BD HDMI, and HDMI 1-7 are shown in knob and app
+#
+# Assignable Details:
+#   CD, DVD, TV/SAT, and DVR/BDR are assignable.
+#       Below notes show settings, using default name/HDMI assignment
+media_player:
+    platform: pioneer
+    host: 10.0.20.156
+    name: SC71 Kitchen
+    port: 8102
+    scan_interval: 60 # attempts to reduce refused connections in log
+    sources:    #HDMI arranged left to right facing back
+      Kitchen Music: '04'   #DVD:       HDMI 1, Component Off, Audio Off
+#      AppleTv: '25'         #BD:        
+      Deck Music: '06'      #SAT/CBL:   HDMI 2, Component = Off, Audio = Off
+#      Legacy: '15'          #DVR/BDR:   HDMI 3, Component = Off, Audio = Opt-2
+#      HDMI 4: '22'
+      HDMI Front: '23'      #HDMI5:
+#      HDMI 6: '24'
+#     HDMI 7: '34'
+#     CD: '01'              #CD: Audio = Analog-1 (AirPort Express)

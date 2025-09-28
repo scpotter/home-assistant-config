@@ -1,0 +1,459 @@
+- id: '1644867418342'
+  alias: 'Pico control: Living Room Lamp '
+  description: ''
+  use_blueprint:
+    path: stephack/core-pico.yaml
+    input:
+      auto_mode: queued
+      pico_remote: 360e9bab9299f9ac99db2b4af0f6849d
+      top_on:
+      - type: turn_on
+        device_id: 80ece547f6a5245d9cac1d8d9981c7a5
+        entity_id: 9c04f3fb0581a032552a3aa902026812
+        domain: light
+        brightness_pct: 50
+      top_on_release: []
+      bottom_off:
+      - type: turn_off
+        device_id: 80ece547f6a5245d9cac1d8d9981c7a5
+        entity_id: 9c04f3fb0581a032552a3aa902026812
+        domain: light
+      up_raise:
+      - device_id: 80ece547f6a5245d9cac1d8d9981c7a5
+        domain: light
+        entity_id: 9c04f3fb0581a032552a3aa902026812
+        type: brightness_increase
+      down_lower:
+      - device_id: 80ece547f6a5245d9cac1d8d9981c7a5
+        domain: light
+        entity_id: 9c04f3fb0581a032552a3aa902026812
+        type: brightness_decrease
+- id: '1644875477879'
+  alias: 'Pico control: Den Mantle'
+  description: ''
+  use_blueprint:
+    path: stephack/core-pico.yaml
+    input:
+      auto_mode: queued
+      pico_remote: f652998c412b08c1b85fdcdab2cbe2c7
+      top_on:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          transition: 1
+        target:
+          entity_id: light.mantle
+      top_on_release: []
+      bottom_off:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.mantle
+      up_raise:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          brightness_step_pct: 5
+        target:
+          entity_id: light.mantle
+      down_lower:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          brightness_step_pct: -5
+        target:
+          entity_id: light.mantle
+      mode_max: 3
+- id: '1644875917161'
+  alias: 'Pico control: Kitchen Sink'
+  description: ''
+  use_blueprint:
+    path: stephack/core-pico.yaml
+    input:
+      auto_mode: queued
+      top_on:
+      - type: turn_on
+        device_id: 834b69244d3d774658e3caaf093b10f6
+        entity_id: light.sink
+        domain: light
+        brightness_pct: 100
+      top_on_release: []
+      bottom_off:
+      - type: turn_off
+        device_id: 834b69244d3d774658e3caaf093b10f6
+        entity_id: light.sink
+        domain: light
+      up_raise:
+      - device_id: 834b69244d3d774658e3caaf093b10f6
+        domain: light
+        entity_id: light.sink
+        type: brightness_increase
+      down_lower:
+      - device_id: 834b69244d3d774658e3caaf093b10f6
+        domain: light
+        entity_id: light.sink
+        type: brightness_decrease
+      pico_remote: 17de66c1c9a7efc27549c109a4306638
+      mode_max: 3
+- id: '1649335187154'
+  alias: Lounge WFH Start
+  description: Turn on desk warmer, Set up Aux HDMI to display
+  triggers:
+  - entity_id: input_boolean.seated
+    to: 'on'
+    trigger: state
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 59727fa03542db7d8043cc263e637e19
+    entity_id: switch.warmer
+    domain: switch
+  - metadata: {}
+    data: {}
+    target:
+      device_id:
+      - c8b3f7ee2e3e378ae7a30093707d0be8
+      - 3060a662af14f1b4bb864e9c0d5424ce
+    action: media_player.turn_on
+  - type: turn_on
+    device_id: 34b28dbed440013204a5441103d63651
+    entity_id: eb9bdb88f80dab991efc567f9e25d269
+    domain: switch
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+  - action: media_player.select_source
+    metadata: {}
+    data:
+      source: HDMI Aux
+    target:
+      entity_id:
+      - media_player.lounge_avr
+  mode: queued
+  max: 3
+- id: '1649364684373'
+  alias: Lounge.DeskWarmer.Restart
+  description: When Seated the Desk Warmer will turn back on if the auto off function
+    is triggered.
+  trigger:
+  - platform: device
+    type: turned_off
+    device_id: 59727fa03542db7d8043cc263e637e19
+    entity_id: switch.warmer
+    domain: switch
+  condition:
+  - condition: state
+    entity_id: input_boolean.seated
+    state: 'on'
+  action:
+  - type: turn_on
+    device_id: 59727fa03542db7d8043cc263e637e19
+    entity_id: switch.warmer
+    domain: switch
+  mode: single
+- id: '1649365657408'
+  alias: Lounge WFH Stop
+  description: ''
+  triggers:
+  - entity_id: input_boolean.seated
+    to: 'off'
+    trigger: state
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 59727fa03542db7d8043cc263e637e19
+    entity_id: switch.warmer
+    domain: switch
+  - action: media_player.turn_off
+    metadata: {}
+    data: {}
+    target:
+      device_id:
+      - c8b3f7ee2e3e378ae7a30093707d0be8
+      entity_id:
+      - media_player.lounge_avr
+  - type: turn_off
+    device_id: 34b28dbed440013204a5441103d63651
+    entity_id: eb9bdb88f80dab991efc567f9e25d269
+    domain: switch
+  mode: single
+- id: '1733956087755'
+  alias: 'Pico Control: Studio'
+  description: Control Nanoleaf Matter bulbs
+  use_blueprint:
+    path: stephack/core-pico.yaml
+    input:
+      auto_mode: queued
+      pico_remote: 6fb679549e994ebe6a0faa5475a9095a
+      top_on:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          brightness_pct: 100
+        target:
+          area_id: studio
+      top_on_release: []
+      bottom_off:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          area_id: studio
+      up_raise:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          brightness_step_pct: 5
+        target:
+          area_id: studio
+      down_lower:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          brightness_step_pct: -5
+        target:
+          area_id: studio
+      mode_max: 3
+      middle_stop:
+      - action: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          area_id: studio
+- id: '1734730204014'
+  alias: 'Pico control: Den Lamp'
+  description: ''
+  use_blueprint:
+    path: stephack/core-pico.yaml
+    input:
+      auto_mode: queued
+      pico_remote: 764387195ff7220dc4af46c15df43906
+      top_on:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          brightness_pct: 75
+        target:
+          device_id: 905af5ac367f6c48f6864e6181196676
+      top_on_release: []
+      bottom_off:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          device_id: 905af5ac367f6c48f6864e6181196676
+      up_raise:
+      - device_id: 905af5ac367f6c48f6864e6181196676
+        domain: light
+        entity_id: e9522ca000785e84945d34e4707baa80
+        type: brightness_increase
+      down_lower:
+      - device_id: 905af5ac367f6c48f6864e6181196676
+        domain: light
+        entity_id: e9522ca000785e84945d34e4707baa80
+        type: brightness_decrease
+      mode_max: 3
+- id: '1736949869093'
+  alias: Hue On Button
+  description: ''
+  triggers:
+  - device_id: 8a62d5593dae4727b3eb9d3f6494eb78
+    domain: hue
+    type: initial_press
+    subtype: 1
+    unique_id: f2b9f558-6f3a-41fd-9efe-1ddbb7d52589
+    trigger: device
+  conditions: []
+  actions:
+  - action: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.seated
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.wake_loungetv
+  mode: single
+- id: '1736950729823'
+  alias: Lounge TV On
+  description: ''
+  use_blueprint:
+    path: cvroque/webostv_turn_on.yaml
+    input:
+      select_action: true
+      custom_action:
+      - device_id: 59727fa03542db7d8043cc263e637e19
+        domain: button
+        entity_id: 681269046c8370ba7c79c23bac57e757
+        type: press
+      webostv: media_player.lg_webos_smart_tv
+- id: '1736979091184'
+  alias: Hue Off Button
+  description: ''
+  triggers:
+  - device_id: 8a62d5593dae4727b3eb9d3f6494eb78
+    domain: hue
+    type: initial_press
+    subtype: 4
+    unique_id: 720c5a15-541d-4298-9c6e-9ef84991fcaa
+    trigger: device
+  conditions: []
+  actions:
+  - action: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.seated
+  mode: single
+- id: '1737835942270'
+  alias: Set Outside Brightness
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.hue_outdoor_motion_sensor_1_light_level
+    attribute: light_level
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.hue_outdoor_motion_sensor_1_light_level
+        attribute: light_level
+        below: 50
+      sequence:
+      - action: input_select.select_option
+        metadata: {}
+        data:
+          option: Dark
+        target:
+          entity_id: input_select.outside_brightness
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.hue_outdoor_motion_sensor_1_light_level
+        above: 49
+        below: 301
+      sequence:
+      - action: input_select.select_option
+        metadata: {}
+        data:
+          option: Dim
+        target:
+          entity_id: input_select.outside_brightness
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.hue_outdoor_motion_sensor_1_light_level
+        above: 300
+      sequence:
+      - action: input_select.select_option
+        metadata: {}
+        data:
+          option: Bright
+        target:
+          entity_id: input_select.outside_brightness
+  mode: single
+- id: '1738185601482'
+  alias: 'Pico: Studio New - Light Entity Control'
+  description: ''
+  use_blueprint:
+    path: smartqasa/lutron_pico_5_light.yaml
+    input:
+      pico_1: 6fb679549e994ebe6a0faa5475a9095a
+      entity:
+      - light.shelves
+      - light.lamp_latest
+      transition_off: 2
+      speed: 50
+      step: 5
+      transition_on: 2
+- id: '1738275968645'
+  alias: Yard Lights
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      night_light_rgbww_colour:
+      - 255
+      - 255
+      - 255
+      - 255
+      - 255
+      motion_trigger:
+      - binary_sensor.dark
+      light_switch:
+        entity_id:
+        - light.post
+        - light.deck_steps
+      time_delay: 0
+- id: '1749297659129'
+  alias: Den Sound Mode
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.den_music_mode
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.den_music_mode
+        state: 'on'
+      sequence:
+      - action: media_player.select_sound_mode
+        metadata: {}
+        data:
+          sound_mode: MCH STEREO
+        target:
+          device_id: 110bc646710d41d050815933fce6f6fe
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.den_music_mode
+        state: 'off'
+      sequence:
+      - action: media_player.select_sound_mode
+        metadata: {}
+        data:
+          sound_mode: DOLBY DIGITAL
+        target:
+          device_id: 110bc646710d41d050815933fce6f6fe
+  mode: single
+- id: '1752350215948'
+  alias: Lounge Sound Mode
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.lounge_music_mode
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.lounge_music_mode
+        state: 'on'
+      sequence:
+      - action: media_player.select_sound_mode
+        metadata: {}
+        data:
+          sound_mode: MCH STEREO
+        target:
+          entity_id:
+          - media_player.lounge_avr
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.lounge_music_mode
+        state: 'off'
+      sequence:
+      - action: media_player.select_sound_mode
+        metadata: {}
+        data:
+          sound_mode: DOLBY DIGITAL
+        target:
+          device_id:
+          - 3060a662af14f1b4bb864e9c0d5424ce
+  mode: single
