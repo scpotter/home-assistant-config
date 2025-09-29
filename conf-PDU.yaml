@@ -1,51 +1,51 @@
-switch:
-  - platform: command_line
-    switches:
+# conf-PDU.yaml
+- platform: command_line
+  switches:
 
-      pdu_outlet_1:
-        command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.1 i 1"
-        command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.1 i 2"
-        command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.1 | awk '{print $4}'"
-        value_template: "{{ 'on' if value == '1' else 'off' }}"
+    pdu_outlet_1:
+      command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.1 i 1"
+      command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.1 i 2"
+      command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.1 | awk '{print $4}'"
+      value_template: "{{ 'on' if value == '1' else 'off' }}"
 
-      pdu_outlet_2:
-        command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.2 i 1"
-        command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.2 i 2"
-        command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.2 | awk '{print $4}'"
-        value_template: "{{ 'on' if value == '1' else 'off' }}"
+    pdu_outlet_2:
+      command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.2 i 1"
+      command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.2 i 2"
+      command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.2 | awk '{print $4}'"
+      value_template: "{{ 'on' if value == '1' else 'off' }}"
 
-      pdu_outlet_3:
-        command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.3 i 1"
-        command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.3 i 2"
-        command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.3 | awk '{print $4}'"
-        value_template: "{{ 'on' if value == '1' else 'off' }}"
+    pdu_outlet_3:
+      command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.3 i 1"
+      command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.3 i 2"
+      command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.3 | awk '{print $4}'"
+      value_template: "{{ 'on' if value == '1' else 'off' }}"
 
-      pdu_outlet_4:
-        command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.4 i 1"
-        command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.4 i 2"
-        command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.4 | awk '{print $4}'"
-        value_template: "{{ 'on' if value == '1' else 'off' }}"
+    pdu_outlet_4:
+      command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.4 i 1"
+      command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.4 i 2"
+      command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.4 | awk '{print $4}'"
+      value_template: "{{ 'on' if value == '1' else 'off' }}"
 
-      pdu_outlet_5:
-        command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.5 i 1"
-        command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.5 i 2"
-        command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.5 | awk '{print $4}'"
-        value_template: "{{ 'on' if value == '1' else 'off' }}"
+    pdu_outlet_5:
+      command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.5 i 1"
+      command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.5 i 2"
+      command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.5 | awk '{print $4}'"
+      value_template: "{{ 'on' if value == '1' else 'off' }}"
 
-      pdu_outlet_6:
-        command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.6 i 1"
-        command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.6 i 2"
-        command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.6 | awk '{print $4}'"
-        value_template: "{{ 'on' if value == '1' else 'off' }}"
+    pdu_outlet_6:
+      command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.6 i 1"
+      command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.6 i 2"
+      command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.6 | awk '{print $4}'"
+      value_template: "{{ 'on' if value == '1' else 'off' }}"
 
-      pdu_outlet_7:
-        command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.7 i 1"
-        command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.7 i 2"
-        command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.7 | awk '{print $4}'"
-        value_template: "{{ 'on' if value == '1' else 'off' }}"
+    pdu_outlet_7:
+      command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.7 i 1"
+      command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.7 i 2"
+      command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.7 | awk '{print $4}'"
+      value_template: "{{ 'on' if value == '1' else 'off' }}"
 
-      pdu_outlet_8:
-        command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.8 i 1"
-        command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.8 i 2"
-        command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.8 | awk '{print $4}'"
-        value_template: "{{ 'on' if value == '1' else 'off' }}"
+    pdu_outlet_8:
+      command_on:  "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.8 i 1"
+      command_off: "snmpset -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.8 i 2"
+      command_state: "snmpget -v1 -c !secret PDU_community 10.0.20.108 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.8 | awk '{print $4}'"
+      value_template: "{{ 'on' if value == '1' else 'off' }}"
