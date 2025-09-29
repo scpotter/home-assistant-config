@@ -1,12 +1,3 @@
-homeassistant:
-  customize: !include customize.yaml
-default_config:
-
-automation: !include automations.yaml
-group: !include groups.yaml
-script: !include scripts.yaml
-scene: !include scenes.yaml
-
 ### PIONEER AVR SC-71 ##########################################################
 # https://www.home-assistant.io/integrations/pioneer/
 # Hardware: AVR Control inputs
@@ -26,7 +17,7 @@ scene: !include scenes.yaml
 # Assignable Details:
 #   CD, DVD, TV/SAT, and DVR/BDR are assignable.
 #       Below notes show settings, using default name/HDMI assignment
-media_player:
+#media_player:
     platform: pioneer
     host: 10.0.20.156
     name: SC71 Kitchen

@@ -1,0 +1,59 @@
+### Envisalink Duo ##########################################################
+# https://www.home-assistant.io/integrations/envisalink/
+#envisalink:
+  host: 10.0.10.248
+  panel_type: HONEYWELL
+  user_name: !secret Duo_user
+  password: !secret Duo_password
+  code: !secret Duo_pin
+  #  port: 4025
+  evl_version: 4
+#  keepalive_interval: 60
+#  zonedump_interval: 30
+#  timeout: 10
+#  panic_type: Police
+  zones:
+    3:
+      name: "Fence Garage Side"
+    4:
+      name: "Fence Basement Side"
+    9:
+      name: "Front Door"
+#      type: "opening"
+    10:
+      name: "Laundry Door"
+    11:
+      name: "Sliding Door"
+    12:
+      name: "Basement Door"
+    13:
+      name: "Office Left Window"
+    14:
+      name: "Office Central Window"
+    15:
+      name: "Office Right Window"
+    16:
+      name: "Den Left Window"
+    17:
+      name: "Den Right Window"
+    18:
+      name: "Living Room Left Window"
+    19:
+      name: "Living Room Central Window"
+    20:
+      name: "Living Room Right Window"
+    21:
+      name: "Dining Room Left Window"
+    22:
+      name: "Dining Room Central Window"
+    23:
+      name: "Dining Room Right Window"
+    24:
+      name: "Basement Left Window"
+    25:
+      name: "Basement Right Window"
+    48:
+      name: "Wireless Transmitter"
+  partitions:
+    1:
+      name: "Main"
