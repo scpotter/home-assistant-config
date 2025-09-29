@@ -17,6 +17,7 @@ onboarding*
 # IN CASE THE BLANKET * IS REMOVED
 # Ignore system generated files/folders
 *.log
+*.log.*
 *.db
 *.db-shm
 *.db-wal
