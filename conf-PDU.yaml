@@ -1,4 +1,5 @@
-# conf-PDU.yaml
+# Important: Host needs SNMP installed first for HAOS from terminal run:
+# apk add net-snmp-tools
 
 template:
   - sensor:
@@ -64,9 +65,12 @@ command_line:
   - switch:
       name: "Rack PDU Outlet 6"
       unique_id: rack_pdu_outlet_6
-      command_on:  "snmpset -v1 -c !secret PDU_community !secret PDU_IPv4 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.6 i 1"
-      command_off: "snmpset -v1 -c !secret PDU_community !secret PDU_IPv4 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.6 i 2"
-      command_state: "snmpget -v1 -c !secret PDU_community !secret PDU_IPv4 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.6"
+    command_on: >
+      snmpset -v1 -c {{ secret("PDU_community") }} {{ secret("PDU_IPv4") }} .1.3.6.1.4.1.318.1.1.4.4.2.1.3.6 i 1
+    command_off: >
+      snmpset -v1 -c {{ secret("PDU_community") }} {{ secret("PDU_IPv4") }} .1.3.6.1.4.1.318.1.1.4.4.2.1.3.6 i 2
+    command_state: >
+      /bin/bash -c 'snmpget -v1 -c {{ secret("PDU_community") }} {{ secret("PDU_IPv4") }} .1.3.6.1.4.1.318.1.1.4.4.2.1.4.6 | grep -q "INTEGER: 1"'
       value_template: "{{ 'on' if value == '1' else 'off' }}"
 
   - switch:

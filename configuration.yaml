@@ -2,7 +2,7 @@ homeassistant:
   customize: !include customize.yaml
   packages:
 ### APC PDU7920 Virtual Device ###############################################
-    pdu: !include conf-PDU.yaml
+    pdu: !include conf-PDU.yaml # Important: Host needs SNMP
 default_config:
 
 automation: !include automations.yaml
