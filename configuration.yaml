@@ -14,11 +14,4 @@ media_player: !include conf-pioneer_avr.yaml
 envisalink: !include conf-envisalink.yaml
 #
 ### APC PDU7920 Outlets ##########################################################
-command_line: #!include conf-PDU.yaml
-- switch:
-    name: Outlet 8
-    command_on: "snmpset -v1 -c !secret PDU_community !secret PDU_IPv4 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.8 i 1"
-    command_off: "snmpset -v1 -c !secret PDU_community !secret PDU_IPv4 .1.3.6.1.4.1.318.1.1.4.4.2.1.3.8 i 2"
-    command_state: "snmpget -v1 -c !secret PDU_community !secret PDU_IPv4 .1.3.6.1.4.1.318.1.1.4.4.2.1.4.8 | awk '{print $4}'"
-    value_template: "{{ 'on' if value == '1' else 'off' }}"
-    unique_id: pdu_outlet_8
+command_line: !include conf-PDU.yaml
