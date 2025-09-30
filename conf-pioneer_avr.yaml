@@ -19,7 +19,7 @@
 #       Below notes show settings, using default name/HDMI assignment
 #media_player:
     platform: pioneer
-    host: 10.0.20.156
+    host: !secret Pioneer_IPv4
     name: SC71 Kitchen
     port: 8102
     scan_interval: 60 # attempts to reduce refused connections in log

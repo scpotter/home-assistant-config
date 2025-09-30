@@ -1,7 +1,7 @@
 ### Envisalink Duo ##########################################################
 # https://www.home-assistant.io/integrations/envisalink/
 #envisalink:
-  host: 10.0.10.248
+  host: !secret Duo_IPv4
   panel_type: HONEYWELL
   user_name: !secret Duo_user
   password: !secret Duo_password
