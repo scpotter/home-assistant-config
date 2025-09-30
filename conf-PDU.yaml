@@ -68,7 +68,7 @@ command_line:
       command_on: !secret PDU_outlet6_on
       command_off: !secret PDU_outlet6_off
       command_state: !secret PDU_outlet6_state
-      value_template: '{{ "INTEGER: 1" in value }}'
+      value_template: "{{ "INTEGER: 1" in value }}""
 
   - switch:
       name: "Rack PDU Outlet 7"
