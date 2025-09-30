@@ -14,4 +14,4 @@ media_player: !include conf-pioneer_avr.yaml
 envisalink: !include conf-envisalink.yaml
 #
 ### APC PDU7920 Outlets ##########################################################
-command_line: !include conf-PDU.yaml
+!include conf-PDU.yaml
