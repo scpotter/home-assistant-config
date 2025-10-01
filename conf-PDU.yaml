@@ -1,95 +1,94 @@
 # conf-PDU.yaml
 # Rack PDU configuration following entity naming (rack_pdu_*)
-
-# Example SNMP/NUT integration sensors (adjust OIDs/values as needed)
-
+#
+# SNMP Sensors
 sensor:
   - platform: snmp
     name: "Rack PDU Input Voltage"
     unique_id: rack_pdu_voltage_input
     entity_id: sensor.rack_pdu_voltage_input
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.2.1.2.1
+    baseoid: 1.3.6.1.4.1.318.1.1.12.1.16.0
     unit_of_measurement: "V"
 
   - platform: snmp
     name: "Rack PDU Input Current"
     unique_id: rack_pdu_current_input
     entity_id: sensor.rack_pdu_current_input
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.2.1.3.1
+    baseoid: 1.3.6.1.4.1.318.1.1.12.1.17.0
     unit_of_measurement: "A"
 
   - platform: snmp
     name: "Rack PDU Input Power"
     unique_id: rack_pdu_power_input
     entity_id: sensor.rack_pdu_power_input
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.2.1.4.1
+    baseoid: 1.3.6.1.4.1.318.1.1.12.1.18.0
     unit_of_measurement: "W"
 
   - platform: snmp
     name: "Rack PDU Temperature"
     unique_id: rack_pdu_temperature
     entity_id: sensor.rack_pdu_temperature
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.2.1.5.1
+    baseoid: 1.3.6.1.4.1.318.1.1.12.1.19.0
     unit_of_measurement: "°C"
 
   - platform: snmp
     name: "Rack PDU Total Load"
     unique_id: rack_pdu_total_load
     entity_id: sensor.rack_pdu_total_load
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.2.1.6.1
+    baseoid: 1.3.6.1.4.1.318.1.1.12.1.20.0
     unit_of_measurement: "W"
 
-# Example outlet switches via SNMP
+# SNMP Outlet Switches
 switch:
   - platform: snmp
     name: "Rack PDU Outlet 1"
     unique_id: rack_pdu_outlet_1
     entity_id: switch.rack_pdu_outlet_1
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.3.1.1
+    baseoid: 1.3.6.1.4.1.318.1.1.4.4.2.1.3.1
 
   - platform: snmp
     name: "Rack PDU Outlet 2"
     unique_id: rack_pdu_outlet_2
     entity_id: switch.rack_pdu_outlet_2
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.3.1.2
+    baseoid: 1.3.6.1.4.1.318.1.1.4.4.2.1.3.2
 
   - platform: snmp
     name: "Rack PDU Outlet 3"
     unique_id: rack_pdu_outlet_3
     entity_id: switch.rack_pdu_outlet_3
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.3.1.3
+    baseoid: 1.3.6.1.4.1.318.1.1.4.4.2.1.3.3
 
   - platform: snmp
     name: "Rack PDU Outlet 4"
     unique_id: rack_pdu_outlet_4
     entity_id: switch.rack_pdu_outlet_4
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.3.1.4
+    baseoid: 1.3.6.1.4.1.318.1.1.4.4.2.1.3.4
 
   - platform: snmp
     name: "Rack PDU Outlet 5"
     unique_id: rack_pdu_outlet_5
     entity_id: switch.rack_pdu_outlet_5
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.3.1.5
+    baseoid: 1.3.6.1.4.1.318.1.1.4.4.2.1.3.5
 
   - platform: snmp
     name: "Rack PDU Outlet 6"
     unique_id: rack_pdu_outlet_6
     entity_id: switch.rack_pdu_outlet_6
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.3.1.6
+    baseoid: 1.3.6.1.4.1.318.1.1.4.4.2.1.3.6
 
   - platform: snmp
     name: "Rack PDU Outlet 7"
     unique_id: rack_pdu_outlet_7
     entity_id: switch.rack_pdu_outlet_7
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.3.1.7
+    baseoid: 1.3.6.1.4.1.318.1.1.4.4.2.1.3.7
 
   - platform: snmp
     name: "Rack PDU Outlet 8"
     unique_id: rack_pdu_outlet_8
     entity_id: switch.rack_pdu_outlet_8
-    baseoid: .1.3.6.1.4.1.12356.101.4.1.3.1.8
+    baseoid: 1.3.6.1.4.1.318.1.1.4.4.2.1.3.8
 
-# Template switches that use outlet descriptions (if available)
+# Template switches (use outlet description sensors if present)
 template:
   - switch:
       - name: "{{ states('sensor.rack_pdu_outlet_1_description') | default('Outlet 1') }}"
