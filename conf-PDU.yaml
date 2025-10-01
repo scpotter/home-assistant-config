@@ -1,35 +1,50 @@
 # =======================
-# APC PDU 7920 integration
-# Outlets 6–8 grouped
+# APC PDU 7920 - SNMP Outlets (1–8)
 # =======================
 
-# ---- Sensors: outlet names ----
-sensor:
-  - platform: snmp
-    name: "PDU Outlet 6 Name"
-    host: !secret PDU_IPv4
-    community: !secret PDU_community
-    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.2.6
-    value_template: "{{ value | trim('\"') }}"
-
-  - platform: snmp
-    name: "PDU Outlet 7 Name"
-    host: !secret PDU_IPv4
-    community: !secret PDU_community
-    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.2.7
-    value_template: "{{ value | trim('\"') }}"
-
-  - platform: snmp
-    name: "PDU Outlet 8 Name"
-    host: !secret PDU_IPv4
-    community: !secret PDU_community
-    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.2.8
-    value_template: "{{ value | trim('\"') }}"
-
-# ---- Switches: outlet control ----
 switch:
   - platform: snmp
-    name: "PDU Outlet 6 Raw"
+    name: "PDU Outlet 1"
+    host: !secret PDU_IPv4
+    community: !secret PDU_community
+    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.3.1
+    payload_on: 1
+    payload_off: 2
+
+  - platform: snmp
+    name: "PDU Outlet 2"
+    host: !secret PDU_IPv4
+    community: !secret PDU_community
+    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.3.2
+    payload_on: 1
+    payload_off: 2
+
+  - platform: snmp
+    name: "PDU Outlet 3"
+    host: !secret PDU_IPv4
+    community: !secret PDU_community
+    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.3.3
+    payload_on: 1
+    payload_off: 2
+
+  - platform: snmp
+    name: "PDU Outlet 4"
+    host: !secret PDU_IPv4
+    community: !secret PDU_community
+    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.3.4
+    payload_on: 1
+    payload_off: 2
+
+  - platform: snmp
+    name: "PDU Outlet 5"
+    host: !secret PDU_IPv4
+    community: !secret PDU_community
+    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.3.5
+    payload_on: 1
+    payload_off: 2
+
+  - platform: snmp
+    name: "PDU Outlet 6"
     host: !secret PDU_IPv4
     community: !secret PDU_community
     baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.3.6
@@ -37,7 +52,7 @@ switch:
     payload_off: 2
 
   - platform: snmp
-    name: "PDU Outlet 7 Raw"
+    name: "PDU Outlet 7"
     host: !secret PDU_IPv4
     community: !secret PDU_community
     baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.3.7
@@ -45,57 +60,9 @@ switch:
     payload_off: 2
 
   - platform: snmp
-    name: "PDU Outlet 8 Raw"
+    name: "PDU Outlet 8"
     host: !secret PDU_IPv4
     community: !secret PDU_community
     baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.3.8
     payload_on: 1
     payload_off: 2
-
-# ---- Template Switches: user-facing, grouped under one "PDU 7920" device ----
-template:
-  - switch:
-      - name: "{{ states('sensor.pdu_outlet_6_name') | default('Outlet 6') }}"
-        unique_id: pdu_outlet_6_template
-        device:
-          identifiers: ["apc_pdu_7920"]
-          name: "APC PDU 7920"
-          manufacturer: "APC"
-          model: "PDU7920"
-        turn_on:
-          service: switch.turn_on
-          target:
-            entity_id: switch.pdu_outlet_6_raw
-        turn_off:
-          service: switch.turn_off
-          target:
-            entity_id: switch.pdu_outlet_6_raw
-        value_template: "{{ is_state('switch.pdu_outlet_6_raw','on') }}"
-
-      - name: "{{ states('sensor.pdu_outlet_7_name') | default('Outlet 7') }}"
-        unique_id: pdu_outlet_7_template
-        device:
-          identifiers: ["apc_pdu_7920"]
-        turn_on:
-          service: switch.turn_on
-          target:
-            entity_id: switch.pdu_outlet_7_raw
-        turn_off:
-          service: switch.turn_off
-          target:
-            entity_id: switch.pdu_outlet_7_raw
-        value_template: "{{ is_state('switch.pdu_outlet_7_raw','on') }}"
-
-      - name: "{{ states('sensor.pdu_outlet_8_name') | default('Outlet 8') }}"
-        unique_id: pdu_outlet_8_template
-        device:
-          identifiers: ["apc_pdu_7920"]
-        turn_on:
-          service: switch.turn_on
-          target:
-            entity_id: switch.pdu_outlet_8_raw
-        turn_off:
-          service: switch.turn_off
-          target:
-            entity_id: switch.pdu_outlet_8_raw
-        value_template: "{{ is_state('switch.pdu_outlet_8_raw','on') }}"
