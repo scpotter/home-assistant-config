@@ -1,5 +1,7 @@
 # -----------------------
 # APC PDU 7920 - Template Switches with Dynamic Names
+# Adds SNMP integration for outlet switching
+# Dynamic Names used if NUT integration is present
 # -----------------------
 
 # ---- Raw SNMP switches (backend control) ----
@@ -61,53 +63,10 @@ switch:
     payload_on: 1
     payload_off: 2
 
-# ---- SNMP sensors for outlet names ----
-sensor:
-  - platform: snmp
-    name: "pdu_outlet_1_name"
-    host: !secret PDU_IPv4
-    community: !secret PDU_community
-    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.2.1
-  - platform: snmp
-    name: "pdu_outlet_2_name"
-    host: !secret PDU_IPv4
-    community: !secret PDU_community
-    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.2.2
-  - platform: snmp
-    name: "pdu_outlet_3_name"
-    host: !secret PDU_IPv4
-    community: !secret PDU_community
-    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.2.3
-  - platform: snmp
-    name: "pdu_outlet_4_name"
-    host: !secret PDU_IPv4
-    community: !secret PDU_community
-    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.2.4
-  - platform: snmp
-    name: "pdu_outlet_5_name"
-    host: !secret PDU_IPv4
-    community: !secret PDU_community
-    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.2.5
-  - platform: snmp
-    name: "pdu_outlet_6_name"
-    host: !secret PDU_IPv4
-    community: !secret PDU_community
-    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.2.6
-  - platform: snmp
-    name: "pdu_outlet_7_name"
-    host: !secret PDU_IPv4
-    community: !secret PDU_community
-    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.2.7
-  - platform: snmp
-    name: "pdu_outlet_8_name"
-    host: !secret PDU_IPv4
-    community: !secret PDU_community
-    baseoid: .1.3.6.1.4.1.318.1.1.4.4.2.1.2.8
-
 # ---- Template switches (frontend) ----
 template:
   - switch:
-      - name: "{{ states('sensor.pdu_outlet_1_name') | default('Outlet 1') }}"
+      - name: "{{ states('sensor.rackpdu_outlet_1_description') | default('Outlet 1') }}"
         unique_id: pdu_outlet_1
         state: "{{ is_state('switch.raw_pdu_outlet_1', 'on') }}"
         turn_on:
@@ -119,7 +78,7 @@ template:
           target:
             entity_id: switch.raw_pdu_outlet_1
 
-      - name: "{{ states('sensor.pdu_outlet_2_name') | default('Outlet 2') }}"
+      - name: "{{ states('sensor.rackpdu_outlet_2_description') | default('Outlet 2') }}"
         unique_id: pdu_outlet_2
         state: "{{ is_state('switch.raw_pdu_outlet_2', 'on') }}"
         turn_on:
@@ -131,7 +90,7 @@ template:
           target:
             entity_id: switch.raw_pdu_outlet_2
 
-      - name: "{{ states('sensor.pdu_outlet_3_name') | default('Outlet 3') }}"
+      - name: "{{ states('sensor.rackpdu_outlet_3_description') | default('Outlet 3') }}"
         unique_id: pdu_outlet_3
         state: "{{ is_state('switch.raw_pdu_outlet_3', 'on') }}"
         turn_on:
@@ -143,7 +102,7 @@ template:
           target:
             entity_id: switch.raw_pdu_outlet_3
 
-      - name: "{{ states('sensor.pdu_outlet_4_name') | default('Outlet 4') }}"
+      - name: "{{ states('sensor.rackpdu_outlet_4_description') | default('Outlet 4') }}"
         unique_id: pdu_outlet_4
         state: "{{ is_state('switch.raw_pdu_outlet_4', 'on') }}"
         turn_on:
@@ -155,7 +114,7 @@ template:
           target:
             entity_id: switch.raw_pdu_outlet_4
 
-      - name: "{{ states('sensor.pdu_outlet_5_name') | default('Outlet 5') }}"
+      - name: "{{ states('sensor.rackpdu_outlet_5_description') | default('Outlet 5') }}"
         unique_id: pdu_outlet_5
         state: "{{ is_state('switch.raw_pdu_outlet_5', 'on') }}"
         turn_on:
@@ -167,7 +126,7 @@ template:
           target:
             entity_id: switch.raw_pdu_outlet_5
 
-      - name: "{{ states('sensor.pdu_outlet_6_name') | default('Outlet 6') }}"
+      - name: "{{ states('sensor.rackpdu_outlet_6_description') | default('Outlet 6') }}"
         unique_id: pdu_outlet_6
         state: "{{ is_state('switch.raw_pdu_outlet_6', 'on') }}"
         turn_on:
@@ -179,7 +138,7 @@ template:
           target:
             entity_id: switch.raw_pdu_outlet_6
 
-      - name: "{{ states('sensor.pdu_outlet_7_name') | default('Outlet 7') }}"
+      - name: "{{ states('sensor.rackpdu_outlet_7_description') | default('Outlet 7') }}"
         unique_id: pdu_outlet_7
         state: "{{ is_state('switch.raw_pdu_outlet_7', 'on') }}"
         turn_on:
@@ -191,7 +150,7 @@ template:
           target:
             entity_id: switch.raw_pdu_outlet_7
 
-      - name: "{{ states('sensor.pdu_outlet_8_name') | default('Outlet 8') }}"
+      - name: "{{ states('sensor.rackpdu_outlet_8_description') | default('Outlet 8') }}"
         unique_id: pdu_outlet_8
         state: "{{ is_state('switch.raw_pdu_outlet_8', 'on') }}"
         turn_on:
