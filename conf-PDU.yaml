@@ -64,7 +64,7 @@ switch:
 # Template switches (use outlet description sensors if present)
 template:
   - switch:
-      - name: "{{ states('sensor.rack_pdu_outlet_1_description') | default('Outlet 1') }}"
+      - name: "Outlet {{ states('sensor.rack_pdu_outlet_1_description') | default('1') }}"
         default_entity_id: switch.rack_pdu_outlet_1_auto
         unique_id: rack_pdu_outlet_1_auto
         state: "{{ is_state('switch.rack_pdu_outlet_1', 'on') }}"
@@ -77,7 +77,7 @@ template:
           target:
             entity_id: switch.rack_pdu_outlet_1
 
-      - name: "{{ states('sensor.rack_pdu_outlet_2_description') | default('Outlet 2') }}"
+      - name: "Outlet {{ states('sensor.rack_pdu_outlet_2_description') | default('2') }}"
         default_entity_id: switch.rack_pdu_outlet_2_auto
         unique_id: rack_pdu_outlet_2_auto
         state: "{{ is_state('switch.rack_pdu_outlet_2', 'on') }}"
@@ -90,7 +90,7 @@ template:
           target:
             entity_id: switch.rack_pdu_outlet_2
 
-      - name: "{{ states('sensor.rack_pdu_outlet_3_description') | default('Outlet 3') }}"
+      - name: "Outlet {{ states('sensor.rack_pdu_outlet_3_description') | default('3') }}"
         default_entity_id: switch.rack_pdu_outlet_3_auto
         unique_id: rack_pdu_outlet_3_auto
         state: "{{ is_state('switch.rack_pdu_outlet_3', 'on') }}"
@@ -103,7 +103,7 @@ template:
           target:
             entity_id: switch.rack_pdu_outlet_3
 
-      - name: "{{ states('sensor.rack_pdu_outlet_4_description') | default('Outlet 4') }}"
+      - name: "Outlet {{ states('sensor.rack_pdu_outlet_4_description') | default('4') }}"
         default_entity_id: switch.rack_pdu_outlet_4_auto
         unique_id: rack_pdu_outlet_4_auto
         state: "{{ is_state('switch.rack_pdu_outlet_4', 'on') }}"
@@ -116,7 +116,7 @@ template:
           target:
             entity_id: switch.rack_pdu_outlet_4
 
-      - name: "{{ states('sensor.rack_pdu_outlet_5_description') | default('Outlet 5') }}"
+      - name: "Outlet {{ states('sensor.rack_pdu_outlet_5_description') | default('5') }}"
         default_entity_id: switch.rack_pdu_outlet_5_auto
         unique_id: rack_pdu_outlet_5_auto
         state: "{{ is_state('switch.rack_pdu_outlet_5', 'on') }}"
@@ -129,7 +129,7 @@ template:
           target:
             entity_id: switch.rack_pdu_outlet_5
 
-      - name: "{{ states('sensor.rack_pdu_outlet_6_description') | default('Outlet 6') }}"
+      - name: "Outlet {{ states('sensor.rack_pdu_outlet_6_description') | default('6') }}"
         default_entity_id: switch.rack_pdu_outlet_6_auto
         unique_id: rack_pdu_outlet_6_auto
         state: "{{ is_state('switch.rack_pdu_outlet_6', 'on') }}"
@@ -142,7 +142,7 @@ template:
           target:
             entity_id: switch.rack_pdu_outlet_6
 
-      - name: "{{ states('sensor.rack_pdu_outlet_7_description') | default('Outlet 7') }}"
+      - name: "Outlet {{ states('sensor.rack_pdu_outlet_7_description') | default('7') }}"
         default_entity_id: switch.rack_pdu_outlet_7_auto
         unique_id: rack_pdu_outlet_7_auto
         state: "{{ is_state('switch.rack_pdu_outlet_7', 'on') }}"
@@ -155,7 +155,7 @@ template:
           target:
             entity_id: switch.rack_pdu_outlet_7
 
-      - name: "{{ states('sensor.rack_pdu_outlet_8_description') | default('Outlet 8') }}"
+      - name: "Outlet {{ states('sensor.rack_pdu_outlet_8_description') | default('8') }}"
         default_entity_id: switch.rack_pdu_outlet_8_auto
         unique_id: rack_pdu_outlet_8_auto
         state: "{{ is_state('switch.rack_pdu_outlet_8', 'on') }}"
