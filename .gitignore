@@ -1,5 +1,5 @@
 # Ignore everything! Remove this when everything else is safe
- *
+*
 # Explicitly INCLUDE this file, all YAML and known configurations
 !.gitignore
 !*.yaml
@@ -7,6 +7,7 @@
 !*.sh
 !*.js*
 !python_scripts/**
+!*/
 # But not these YAML known to contain sensitive data/credentials
 ip_bans.yaml
 secrets.yaml

@@ -1,8 +1,8 @@
 blueprint:
   name: BP - Pico Config
-  description: "This is for the 5 button picos that have the following model:\n\n\
-    \ PJ2-3BRL-GXX-X01 (Pico3ButtonRaiseLower)\n\nSelect an action for each button\
-    \ listed below. "
+  description: "This is for the 5 button picos that have the following model:\n\n
+    PJ2-3BRL-GXX-X01 (Pico3ButtonRaiseLower)\n\nSelect an action for each button listed
+    below. "
   domain: automation
   input:
     pico_remote:
@@ -10,8 +10,8 @@ blueprint:
       description: 'Select the pico remote to configure:'
       selector:
         device:
-          integration: lutron_caseta
           model: PJ2-3BRL-GXX-X01 (Pico3ButtonRaiseLower)
+          multiple: false
     auto_mode:
       name: Automation Mode
       description: Mode that automation runs in (single,  restart, queued, parallel).
@@ -23,6 +23,9 @@ blueprint:
           - restart
           - queued
           - parallel
+          custom_value: false
+          multiple: false
+          sort: false
     mode_max:
       name: Mode Max (ignored by Single and Restart Modes)
       description: Maximum number of runs that can be executed or queued at a time.
@@ -31,8 +34,8 @@ blueprint:
         number:
           min: 1.0
           max: 15.0
-          step: 1.0
           mode: slider
+          step: 1.0
     top_on:
       name: Top (On) Button Pressed
       description: Execute when TOP button is PRESSED
@@ -94,86 +97,86 @@ blueprint:
       selector:
         action: {}
   source_url: https://raw.githubusercontent.com/stephack/Hassio/main/blueprints/core-pico.yaml
-trigger:
+mode: !input auto_mode
+max: !input mode_max
+triggers:
 - platform: device
-  device_id: !input 'pico_remote'
+  device_id: !input pico_remote
   domain: lutron_caseta
   type: press
   subtype: 'on'
 - platform: device
-  device_id: !input 'pico_remote'
+  device_id: !input pico_remote
   domain: lutron_caseta
   type: press
   subtype: raise
 - platform: device
-  device_id: !input 'pico_remote'
+  device_id: !input pico_remote
   domain: lutron_caseta
   type: press
   subtype: stop
 - platform: device
-  device_id: !input 'pico_remote'
+  device_id: !input pico_remote
   domain: lutron_caseta
   type: press
   subtype: lower
 - platform: device
-  device_id: !input 'pico_remote'
+  device_id: !input pico_remote
   domain: lutron_caseta
   type: press
   subtype: 'off'
 - platform: device
-  device_id: !input 'pico_remote'
+  device_id: !input pico_remote
   domain: lutron_caseta
   type: release
   subtype: 'on'
 - platform: device
-  device_id: !input 'pico_remote'
+  device_id: !input pico_remote
   domain: lutron_caseta
   type: release
   subtype: raise
 - platform: device
-  device_id: !input 'pico_remote'
+  device_id: !input pico_remote
   domain: lutron_caseta
   type: release
   subtype: stop
 - platform: device
-  device_id: !input 'pico_remote'
+  device_id: !input pico_remote
   domain: lutron_caseta
   type: release
   subtype: lower
 - platform: device
-  device_id: !input 'pico_remote'
+  device_id: !input pico_remote
   domain: lutron_caseta
   type: release
   subtype: 'off'
-condition: []
-action:
+actions:
 - choose:
   - conditions: '{{ trigger.event.data.action == "press" }}'
     sequence:
     - choose:
       - conditions: '{{ trigger.event.data.button_number == 2 }}'
-        sequence: !input 'top_on'
+        sequence: !input top_on
       - conditions: '{{ trigger.event.data.button_number == 5 }}'
-        sequence: !input 'up_raise'
+        sequence: !input up_raise
       - conditions: '{{ trigger.event.data.button_number == 3 }}'
-        sequence: !input 'middle_stop'
+        sequence: !input middle_stop
       - conditions: '{{ trigger.event.data.button_number == 6 }}'
-        sequence: !input 'down_lower'
+        sequence: !input down_lower
       - conditions: '{{ trigger.event.data.button_number == 4 }}'
-        sequence: !input 'bottom_off'
+        sequence: !input bottom_off
   - conditions: '{{ trigger.event.data.action == "release" }}'
     sequence:
     - choose:
       - conditions: '{{ trigger.event.data.button_number == 2 }}'
-        sequence: !input 'top_on_release'
+        sequence: !input top_on_release
       - conditions: '{{ trigger.event.data.button_number == 5 }}'
-        sequence: !input 'up_raise_release'
+        sequence: !input up_raise_release
       - conditions: '{{ trigger.event.data.button_number == 3 }}'
-        sequence: !input 'middle_stop_release'
+        sequence: !input middle_stop_release
       - conditions: '{{ trigger.event.data.button_number == 6 }}'
-        sequence: !input 'down_lower_release'
+        sequence: !input down_lower_release
       - conditions: '{{ trigger.event.data.button_number == 4 }}'
-        sequence: !input 'bottom_off_release'
+        sequence: !input bottom_off_release
   default: []
-mode: !input 'auto_mode'
-max: !input 'mode_max'
+conditions: []
