@@ -1,5 +1,7 @@
 homeassistant:
   customize: !include customize.yaml
+  allowlist_external_dirs:
+    - /config
   packages:
 ### APC PDU7920 Virtual Device ###############################################
     pdu: !include conf-PDU.yaml # Important: Host needs SNMP
@@ -16,3 +18,6 @@ media_player: !include conf-pioneer_avr.yaml
 ### Envisalink Duo ##########################################################
 envisalink: !include conf-envisalink.yaml
 #
+### Quick Test
+shell_command:
+  plan_b_stub_trigger: "date >> /config/.plan_b_stub_trigger.log"

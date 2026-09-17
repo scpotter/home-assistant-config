@@ -557,6 +557,7 @@
       channel_1_allow_group_volume: false
       channel_1_reset_to_group_on_play: false
       duck_on_vol_toggle: false
+      channel_1_default_play_pause: []
 - id: '1782961075151'
   alias: Hood Off
   description: ''
@@ -609,3 +610,28 @@
       device_id: dba6895d30164f83a6cdf6832b3b85a0
     data: {}
   mode: single
+- id: '1789577474223'
+  alias: Plan B stub trigger test
+  description: Plan B stub trigger test
+  triggers:
+  - trigger: event
+    event_type: folder_watcher
+    event_data:
+      event_type: created
+  - trigger: event
+    event_type: folder_watcher
+    event_data:
+      event_type: modified
+  - trigger: event
+    event_type: folder_watcher
+    event_data:
+      event_type: deleted
+  - trigger: event
+    event_type: folder_watcher
+    event_data:
+      event_type: moved
+  conditions: []
+  actions:
+  - delay: 00:00:05
+  - action: shell_command.plan_b_stub_trigger
+  mode: restart
