@@ -20,7 +20,12 @@ while read -r local_ref local_sha remote_ref remote_sha; do
     [ "$local_sha" = "$zero_sha" ] && continue  # deleting a branch, nothing to check
 
     if [ "$remote_sha" = "$zero_sha" ]; then
-        range="$empty_tree..$local_sha"
+        # New branch/ref on the remote (e.g. a fresh feature branch) -- diff
+        # from where it actually diverged from main, not from nothing. The
+        # empty-tree fallback would otherwise flag every pre-existing file in
+        # the repo as "changed" on a brand-new branch's first push.
+        base="$(git merge-base main "$local_sha" 2>/dev/null || echo "$empty_tree")"
+        range="$base..$local_sha"
     else
         range="$remote_sha..$local_sha"
     fi
