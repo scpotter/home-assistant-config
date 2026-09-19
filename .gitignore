@@ -7,6 +7,8 @@
 !*.sh
 !*.js*
 !python_scripts/**
+!.yamllint
+!scripts/hooks/**
 !*/
 # But not these YAML known to contain sensitive data/credentials
 ip_bans.yaml
