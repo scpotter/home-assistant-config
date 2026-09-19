@@ -24,4 +24,5 @@ shell_command:
   plan_b_stub_trigger: "date >> /config/.plan_b_stub_trigger.log"
   pull_home_assistant_config: "cd /config && git fetch origin > /config/.plan_c_pull_debug.log 2>&1 && git merge --ff-only origin/main >> /config/.plan_c_pull_debug.log 2>&1; echo exit=$? >> /config/.plan_c_pull_debug.log"
   pull_esphome_config: "cd /config/esphome && git fetch origin >> /config/.plan_c_pull_debug.log 2>&1 && git merge --ff-only origin/main >> /config/.plan_c_pull_debug.log 2>&1; echo exit=$? >> /config/.plan_c_pull_debug.log"
+  fix_github_known_hosts: "echo HOME=$HOME user=$(whoami) > /config/.plan_c_pull_debug.log; mkdir -p ${HOME}/.ssh && ssh-keyscan -t rsa,ed25519 github.com >> ${HOME}/.ssh/known_hosts 2>>/config/.plan_c_pull_debug.log && echo done >> /config/.plan_c_pull_debug.log"
 ### Plan C Stage 1 step 3 -- end-to-end pull test, 2026-09-19
