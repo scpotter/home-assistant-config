@@ -612,7 +612,8 @@
   mode: single
 - id: '1789577474223'
   alias: Github config push
-  description: On any /config change, push both home-assistant-config and esphome-config to GitHub
+  description: On any /config change, push both home-assistant-config and esphome-config
+    to GitHub
   triggers:
   - trigger: event
     event_type: folder_watcher
@@ -646,4 +647,13 @@
   actions:
   - action: shell_command.pull_home_assistant_config
   - action: shell_command.pull_esphome_config
+  mode: single
+- id: '1789839699916'
+  alias: New automation
+  description: ''
+  triggers:
+  - trigger: time
+    at: 00:00:00
+  conditions: []
+  actions: []
   mode: single
