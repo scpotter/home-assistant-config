@@ -19,5 +19,8 @@ media_player: !include conf-pioneer_avr.yaml
 envisalink: !include conf-envisalink.yaml
 #
 ### Quick Test
+### Slice 7a Plan C — config sync (pull leg, Stage 1)
 shell_command:
   plan_b_stub_trigger: "date >> /config/.plan_b_stub_trigger.log"
+  pull_home_assistant_config: "cd /config && git fetch origin && git merge --ff-only origin/main"
+  pull_esphome_config: "cd /config/esphome && git fetch origin && git merge --ff-only origin/main"
