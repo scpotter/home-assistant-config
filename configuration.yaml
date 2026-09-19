@@ -25,3 +25,4 @@ shell_command:
   pull_home_assistant_config: "cd /config && git fetch origin && git merge --ff-only origin/main"
   pull_esphome_config: "cd /config/esphome && git fetch origin && git merge --ff-only origin/main"
 ### Plan C Stage 1 step 3 -- end-to-end pull test, 2026-09-19
+### Plan C Stage 1 step 3 retest -- via the automation itself, not docker exec, 2026-09-19
