@@ -611,8 +611,8 @@
     data: {}
   mode: single
 - id: '1789577474223'
-  alias: Plan B stub trigger test
-  description: Plan B stub trigger test
+  alias: Github config push
+  description: On any /config change, push both home-assistant-config and esphome-config to GitHub
   triggers:
   - trigger: event
     event_type: folder_watcher
@@ -633,10 +633,11 @@
   conditions: []
   actions:
   - delay: 00:00:05
-  - action: shell_command.plan_b_stub_trigger
+  - action: shell_command.push_home_assistant_config
+  - action: shell_command.push_esphome_config
   mode: restart
 - id: '1789811525000'
-  alias: Plan C pull config from GitHub
+  alias: Github config pull
   description: Every 5 minutes, fast-forward pull main into /config and /config/esphome
   triggers:
   - trigger: time_pattern

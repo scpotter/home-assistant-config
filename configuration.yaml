@@ -18,13 +18,9 @@ media_player: !include conf-pioneer_avr.yaml
 ### Envisalink Duo ##########################################################
 envisalink: !include conf-envisalink.yaml
 #
-### Quick Test
-### Slice 7a Plan C — config sync (pull leg, Stage 1)
+### Config sync (git pull/push automation)
 shell_command:
-  plan_b_stub_trigger: "date >> /config/.plan_b_stub_trigger.log"
   pull_home_assistant_config: "cd /config && { date; git fetch origin && git merge --ff-only origin/main; } >> /config/.pull_home_assistant_config.log 2>&1"
   pull_esphome_config: "cd /config/esphome && { date; git fetch origin && git merge --ff-only origin/main; } >> /config/.pull_esphome_config.log 2>&1"
   push_home_assistant_config: "cd /config && { date; git add -A && (git diff --cached --quiet && echo 'No changes to push.' || (git commit -m 'HAOS config sync' && git fetch origin && git merge --ff-only origin/main && git push origin main)); } >> /config/.push_home_assistant_config.log 2>&1"
   push_esphome_config: "cd /config/esphome && { date; git add -A && (git diff --cached --quiet && echo 'No changes to push.' || (git commit -m 'HAOS config sync' && git fetch origin && git merge --ff-only origin/main && git push origin main)); } >> /config/.push_esphome_config.log 2>&1"
-### Plan C Stage 1 step 3 -- end-to-end pull test, 2026-09-19
-### Plan C Stage 1 step 3 retest -- via the automation itself, not docker exec, 2026-09-19
