@@ -635,3 +635,14 @@
   - delay: 00:00:05
   - action: shell_command.plan_b_stub_trigger
   mode: restart
+- id: '1789811525000'
+  alias: Plan C pull config from GitHub
+  description: Every 5 minutes, fast-forward pull main into /config and /config/esphome
+  triggers:
+  - trigger: time_pattern
+    minutes: /5
+  conditions: []
+  actions:
+  - action: shell_command.pull_home_assistant_config
+  - action: shell_command.pull_esphome_config
+  mode: single
