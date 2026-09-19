@@ -24,3 +24,4 @@ shell_command:
   plan_b_stub_trigger: "date >> /config/.plan_b_stub_trigger.log"
   pull_home_assistant_config: "cd /config && git fetch origin && git merge --ff-only origin/main"
   pull_esphome_config: "cd /config/esphome && git fetch origin && git merge --ff-only origin/main"
+### Plan C Stage 1 step 3 -- end-to-end pull test, 2026-09-19
