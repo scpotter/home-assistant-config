@@ -8,6 +8,7 @@
 !*.js*
 !python_scripts/**
 !.yamllint
+!secrets.yaml.example
 !scripts/hooks/**
 !*/
 # But not these YAML known to contain sensitive data/credentials
