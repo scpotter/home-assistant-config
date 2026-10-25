@@ -286,8 +286,8 @@
         - light.yard_post
         - light.yard_garage_left
         - light.garage_right
-        - light.front_door
         - light.deck_steps
+        - light.yard_front_door
       time_delay: 0
       include_light_control:
       - use_brightness
