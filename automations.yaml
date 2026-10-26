@@ -130,7 +130,7 @@
   triggers:
   - trigger: state
     entity_id:
-    - event.desk_remote_button_large
+    - event.desk_remote_button_small
   - type: occupied
     device_id: defc28fe646fcc6878fee34bbd45a903
     entity_id: 9f53cd4ce45b3d1c818915834de830c5
