@@ -283,11 +283,10 @@
       - binary_sensor.outside_dark
       light_switch:
         entity_id:
-        - light.yard_post
         - light.yard_garage_left
-        - light.garage_right
         - light.deck_steps
         - light.yard_front_door
+        - light.yard_garage_right
       time_delay: 0
       include_light_control:
       - use_brightness
