@@ -434,3 +434,206 @@
       entity_only: true
     light.front_door:
       entity_only: true
+- id: '1793141267209'
+  name: Halloween
+  entities:
+    light.yard_front_door:
+      min_color_temp_kelvin: 1801
+      max_color_temp_kelvin: 6535
+      supported_color_modes:
+      - color_temp
+      - hs
+      - xy
+      color_mode: hs
+      brightness: 255
+      color_temp_kelvin:
+      hs_color:
+      - 293.386
+      - 75.984
+      rgb_color:
+      - 234
+      - 61
+      - 255
+      xy_color:
+      - 0.355
+      - 0.155
+      friendly_name: Front Door
+      supported_features: 32
+      state: 'on'
+    light.yard_garage_left:
+      min_color_temp_kelvin: 1801
+      max_color_temp_kelvin: 6535
+      supported_color_modes:
+      - color_temp
+      - hs
+      - xy
+      color_mode: hs
+      brightness: 255
+      color_temp_kelvin:
+      hs_color:
+      - 291.969
+      - 75.984
+      rgb_color:
+      - 229
+      - 61
+      - 255
+      xy_color:
+      - 0.348
+      - 0.152
+      friendly_name: Garage Left
+      supported_features: 32
+      state: 'on'
+    light.yard_garage_right:
+      min_color_temp_kelvin: 1801
+      max_color_temp_kelvin: 6535
+      supported_color_modes:
+      - color_temp
+      - hs
+      - xy
+      color_mode: hs
+      brightness: 255
+      color_temp_kelvin:
+      hs_color:
+      - 293.386
+      - 75.984
+      rgb_color:
+      - 234
+      - 61
+      - 255
+      xy_color:
+      - 0.355
+      - 0.155
+      friendly_name: Garage Right
+      supported_features: 32
+      state: 'on'
+    light.yard_post_2:
+      min_color_temp_kelvin: 1801
+      max_color_temp_kelvin: 6535
+      supported_color_modes:
+      - color_temp
+      - hs
+      - xy
+      color_mode: hs
+      brightness: 255
+      color_temp_kelvin:
+      hs_color:
+      - 293.386
+      - 75.984
+      rgb_color:
+      - 234
+      - 61
+      - 255
+      xy_color:
+      - 0.355
+      - 0.155
+      friendly_name: Post
+      supported_features: 32
+      state: 'on'
+    light.yard_spotlight:
+      min_color_temp_kelvin: 1500
+      max_color_temp_kelvin: 9000
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      effect:
+      color_mode: hs
+      brightness: 163
+      color_temp_kelvin:
+      hs_color:
+      - 0
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      xy_color:
+      - 0.701
+      - 0.299
+      friendly_name: Spot
+      supported_features: 36
+      state: 'on'
+    select.crepe_myrtle_mode:
+      options:
+      - color
+      - demo
+      - effect
+      - movie
+      - 'off'
+      - playlist
+      - rt
+      friendly_name: Crepe Myrtle Mode
+      state: movie
+    light.yard_crepe_myrtle:
+      effect_list:
+      - 0 Green pulse
+      - 1 Purple Pulse
+      supported_color_modes:
+      - rgbw
+      effect: 0 Green pulse
+      color_mode: rgbw
+      brightness: 255
+      hs_color:
+      - 0
+      - 0
+      rgb_color:
+      - 255
+      - 255
+      - 255
+      xy_color:
+      - 0.323
+      - 0.329
+      rgbw_color:
+      - 255
+      - 255
+      - 255
+      - 0
+      friendly_name: Crepe Myrtle
+      supported_features: 4
+      state: 'on'
+    select.twinkly_bonus_mode:
+      options:
+      - color
+      - demo
+      - effect
+      - movie
+      - 'off'
+      - playlist
+      - rt
+      friendly_name: Super Spruce Mode
+      state: movie
+    light.yard_twinkly_bonus:
+      effect_list:
+      - 0 Orange Pulse
+      - 1 EvilStrobe
+      - 2 Ghost
+      - 3 Halloween slidi
+      - 4 Purple Pulse
+      supported_color_modes:
+      - rgbw
+      effect: 0 Orange Pulse
+      color_mode: rgbw
+      brightness: 255
+      hs_color:
+      - 0
+      - 0
+      rgb_color:
+      - 255
+      - 255
+      - 255
+      xy_color:
+      - 0.323
+      - 0.329
+      rgbw_color:
+      - 255
+      - 255
+      - 255
+      - 0
+      friendly_name: Super Spruce
+      supported_features: 4
+      state: 'on'
+  metadata: {}
+  icon: mdi:halloween
