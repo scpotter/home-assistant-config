@@ -649,7 +649,7 @@
   mode: single
 - id: '1789839699916'
   alias: New automation
-  description: ''
+  description: new to be deleted
   triggers:
   - trigger: time
     at: 00:00:00
