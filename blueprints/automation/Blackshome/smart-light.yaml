@@ -66,8 +66,8 @@ blueprint:
           default: []
           selector:
             entity:
-              reorder: false
               multiple: false
+              reorder: false
     trigger_button:
       name: Trigger - Push Button
       icon: mdi:gesture-tap-button
@@ -100,8 +100,8 @@ blueprint:
           default: []
           selector:
             entity:
-              reorder: false
               multiple: false
+              reorder: false
     trigger_sun:
       name: Trigger - Sun Elevation
       icon: mdi:weather-sunny
@@ -459,8 +459,8 @@ blueprint:
                 value: use_rgbww_colour
               - label: Disable Colour Control
                 value: disable_colour_control
-              custom_value: false
               multiple: false
+              custom_value: false
               sort: false
         light_colour_temperature:
           name: Colour Temperature
@@ -591,8 +591,8 @@ blueprint:
               - label: 16 - Time Controlled - Colour Temp + Lux Controlled Brightness
                   Inverted
                 value: enable_time_controled_colour_lux_brightness_inv
-              custom_value: false
               multiple: false
+              custom_value: false
               sort: false
         dynamic_lighting_lux_sensor:
           name: Dynamic Lighting - Ambient Light Sensor
@@ -920,8 +920,8 @@ blueprint:
                 value: enable_state_control
               - label: Disable State Control Option
                 value: disable_state_control
-              custom_value: false
               multiple: false
+              custom_value: false
               sort: false
         dynamic_lighting_state_control_activation_state:
           name: Dynamic Lighting - State Control Activation State
@@ -939,8 +939,8 @@ blueprint:
                 value: 'on'
               - label: OFF State
                 value: 'off'
-              custom_value: false
               multiple: false
+              custom_value: false
               sort: false
         dynamic_lighting_state_control_entity:
           name: Dynamic Lighting - State Control Entity
@@ -951,8 +951,8 @@ blueprint:
           default: []
           selector:
             entity:
-              reorder: false
               multiple: false
+              reorder: false
     bypass_settings:
       name: Bypass
       icon: mdi:cog-pause-outline
@@ -1087,8 +1087,8 @@ blueprint:
                 value: weekday_enabled
               - label: Disable the weekday option
                 value: weekday_disabled
-              custom_value: false
               multiple: false
+              custom_value: false
               sort: false
         weekday_options:
           name: Weekdays
@@ -1152,8 +1152,8 @@ blueprint:
                 value: night_lights_enabled
               - label: Disable the night lights options
                 value: night_lights_disabled
-              custom_value: false
               multiple: false
+              custom_value: false
               sort: false
         night_lights_conditions:
           name: Night Lights Conditions (Required For Night Lights)
@@ -1397,8 +1397,8 @@ blueprint:
                 value: use_rgbww_colour
               - label: Disable Colour Control
                 value: disable_colour_control
-              custom_value: false
               multiple: false
+              custom_value: false
               sort: false
         night_light_colour_temperature:
           name: Night Lights - Colour Temperature
@@ -1480,8 +1480,8 @@ blueprint:
                 value: enable_ha_restart
               - label: Disable the HA Restart
                 value: disable_ha_restart
-              custom_value: false
               multiple: false
+              custom_value: false
               sort: false
   source_url: https://gist.github.com/Blackshome/e6c8f1bf846bab2fa4431934a0a85770
 mode: restart
@@ -1867,6 +1867,527 @@ triggers:
 - trigger: homeassistant
   id: t20
   event: start
+condition:
+- condition: or
+  conditions:
+  - condition: and
+    conditions:
+    - '{{ ''entity_on'' in include_entity_state }}'
+    - condition: trigger
+      id: t0
+    - condition: state
+      entity_id: !input entity_input
+      match: any
+      state: 'on'
+  - condition: and
+    conditions:
+    - '{{ ''entity_off'' in include_entity_state }}'
+    - condition: trigger
+      id: t1
+    - condition: state
+      entity_id: !input entity_input
+      match: any
+      state: 'off'
+  - condition: and
+    conditions:
+    - '{{ ''sun_falling'' in include_sun }}'
+    - condition: trigger
+      id: t2
+  - condition: and
+    conditions:
+    - '{{ ''sun_rising'' in include_sun }}'
+    - condition: trigger
+      id: t3
+  - condition: and
+    conditions:
+    - '{{ ''ambient_low'' in include_ambient }}'
+    - condition: trigger
+      id: t4
+  - condition: and
+    conditions:
+    - '{{ ''ambient_high'' in include_ambient }}'
+    - condition: trigger
+      id: t5
+  - condition: and
+    conditions:
+    - '{{ ''time_on'' in include_time }}'
+    - condition: trigger
+      id: t6
+  - condition: and
+    conditions:
+    - '{{ ''time_off'' in include_time }}'
+    - condition: trigger
+      id: t7
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t8_on
+    - '{{ ''bypass_enabled_turn_on'' in include_bypass }}'
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t8_off
+    - '{{ ''bypass_enabled_turn_off'' in include_bypass }}'
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t8_stop
+    - '{{ ''bypass_enabled_stop'' in include_bypass }}'
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t9_on
+    - '{{ ''bypass_enabled_turn_on'' in include_bypass }}'
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t9_off
+    - '{{ ''bypass_enabled_turn_off'' in include_bypass }}'
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t9_stop
+    - '{{ ''bypass_enabled_stop'' in include_bypass }}'
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t10
+    - '{{ include_night_lights == ''night_lights_enabled'' }}'
+    - '{{ ''entity_state_enabled'' in night_lights_conditions }}'
+    - condition: state
+      entity_id: !input night_lights_entity_state
+      match: any
+      state: 'on'
+    - condition: or
+      conditions:
+      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
+        | list | count > 0) }}'
+      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
+        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
+      - condition: template
+        value_template: '{{ ''manage_scripts_crossing_over'' in include_night_light_control
+          }}'
+      - condition: template
+        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
+          'on') }}\n{% endif %}"
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t11
+    - '{{ include_night_lights == ''night_lights_enabled'' }}'
+    - '{{ ''time_enabled'' in night_lights_conditions }}'
+    - condition: or
+      conditions:
+      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
+        | list | count > 0) }}'
+      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
+        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
+      - condition: template
+        value_template: '{{ ''manage_scripts_crossing_over'' in include_night_light_control
+          }}'
+      - condition: template
+        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
+          'on') }}\n{% endif %}"
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t12
+    - '{{ include_night_lights == ''night_lights_enabled'' }}'
+    - '{{ ''sun_enabled'' in night_lights_conditions }}'
+    - condition: or
+      conditions:
+      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
+        | list | count > 0) }}'
+      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
+        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
+      - condition: template
+        value_template: '{{ ''manage_scripts_crossing_over'' in include_night_light_control
+          }}'
+      - condition: template
+        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
+          'on') }}\n{% endif %}"
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t13
+    - '{{ include_night_lights == ''night_lights_enabled'' }}'
+    - '{{ ''entity_state_enabled'' in night_lights_conditions }}'
+    - condition: state
+      entity_id: !input night_lights_entity_state
+      state: 'off'
+    - condition: or
+      conditions:
+      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
+        | list | count > 0) }}'
+      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
+        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
+      - condition: template
+        value_template: '{{ ''manage_scripts_crossing_over'' in include_night_light_control
+          }}'
+      - condition: template
+        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
+          'on') }}\n{% endif %}"
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t14
+    - '{{ include_night_lights == ''night_lights_enabled'' }}'
+    - '{{ ''time_enabled'' in night_lights_conditions }}'
+    - condition: or
+      conditions:
+      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
+        | list | count > 0) }}'
+      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
+        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
+      - condition: template
+        value_template: '{{ ''manage_scripts_crossing_over'' in include_night_light_control
+          }}'
+      - condition: template
+        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
+          'on') }}\n{% endif %}"
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t15
+    - '{{ include_night_lights == ''night_lights_enabled'' }}'
+    - '{{ ''sun_enabled'' in night_lights_conditions }}'
+    - condition: or
+      conditions:
+      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
+        | list | count > 0) }}'
+      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
+        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
+      - condition: template
+        value_template: '{{ ''manage_scripts_crossing_over'' in include_night_light_control
+          }}'
+      - condition: template
+        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
+          'on') }}\n{% endif %}"
+  - condition: and
+    conditions:
+    - condition: trigger
+      id:
+      - t16
+      - t17
+    - condition: template
+      value_template: '{{ include_dynamic_lighting != ''disable_dynamic_lighting''
+        }}'
+    - condition: template
+      value_template: '{{ dynamic_lighting_state_control == ''enable_state_control''
+        }}'
+    - condition: or
+      conditions:
+      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
+        | list | count > 0) }}'
+      - condition: template
+        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
+          'on') }}\n{% endif %}"
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ ''button_on'' in include_button }}'
+    - condition: trigger
+      id: t18
+    - condition: or
+      conditions:
+      - condition: and
+        conditions:
+        - condition: template
+          value_template: "{% if (expand(light_switch.entity_id) | selectattr('domain',
+            'in', ['light','switch']) | list | count > 0) %}\n  {{ expand(light_switch.entity_id)
+            | selectattr('state', '==', 'on') | list | count == 0 }}\n{% else %}\n
+            \ true\n{% endif %}\n"
+        - condition: template
+          value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
+            'off') }}\n{% else %}\n  true\n{% endif %}"
+        - condition: template
+          value_template: "{% set entity_ok = ('entity_state_enabled' in night_lights_conditions)
+            and\n  (expand(night_lights_entity_state) | selectattr('state','equalto','on')
+            | list | count > 0) %}\n{% set time_ok = ('time_enabled' in night_lights_conditions)
+            and\n  (now().strftime('%H:%M:%S') >= night_lights_after_time and now().strftime('%H:%M:%S')
+            <= night_lights_before_time) %}\n{% set sun_ok = ('sun_enabled' in night_lights_conditions)
+            and (\n    (not is_state_attr('sun.sun','rising', true) and state_attr('sun.sun','elevation')
+            <= night_lights_sun_elevation | float(90)) or\n    (is_state_attr('sun.sun','rising',
+            true) and state_attr('sun.sun','elevation') <= night_lights_sun_elevation_rising
+            | float(90))\n) %} {% if include_night_lights == 'night_lights_enabled'
+            %}\n  {{ not (entity_ok or time_ok or sun_ok) }}\n{% else %}\n  true\n{%
+            endif %}\n"
+      - condition: and
+        conditions:
+        - condition: template
+          value_template: '{{ include_dynamic_lighting != ''disable_dynamic_lighting''
+            }}'
+        - condition: template
+          value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
+            'off') }}\n{% else %}\n  true\n{% endif %}"
+      - condition: and
+        conditions:
+        - alias: Check if night lights is enabled
+          condition: template
+          value_template: '{{ include_night_lights == ''night_lights_enabled'' }}'
+        - condition: template
+          value_template: "{% if (expand(night_lights.entity_id) | selectattr('domain',
+            'in', ['light','switch']) | list | count > 0) %}\n  {{ expand(night_lights.entity_id)
+            | selectattr('state', '==', 'on') | list | count == 0 }}\n{% else %}\n
+            \ true\n{% endif %}\n"
+        - condition: template
+          value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
+            'off') }}\n{% else %}\n  true\n{% endif %}"
+        - condition: template
+          value_template: "{% set entity_ok = ('entity_state_enabled' in night_lights_conditions)
+            and\n  (expand(night_lights_entity_state) | selectattr('state','equalto','on')
+            | list | count > 0) %}\n{% set time_ok = ('time_enabled' in night_lights_conditions)
+            and\n  (now().strftime('%H:%M:%S') >= night_lights_after_time and now().strftime('%H:%M:%S')
+            <= night_lights_before_time) %}\n{% set sun_ok = ('sun_enabled' in night_lights_conditions)
+            and (\n    (not is_state_attr('sun.sun','rising', true) and state_attr('sun.sun','elevation')
+            <= night_lights_sun_elevation | float(90)) or\n    (is_state_attr('sun.sun','rising',
+            true) and state_attr('sun.sun','elevation') <= night_lights_sun_elevation_rising
+            | float(90))\n) %} {% if include_night_lights == 'night_lights_enabled'
+            %}\n  {{ (entity_ok or time_ok or sun_ok) }}\n{% else %}\n  false\n{%
+            endif %}\n"
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ ''button_off'' in include_button }}'
+    - condition: trigger
+      id: t19
+    - condition: or
+      conditions:
+      - condition: and
+        conditions:
+        - condition: template
+          value_template: "{% if (expand(light_switch.entity_id) | selectattr('domain',
+            'in', ['light','switch']) | list | count > 0) %}\n  {{ expand(light_switch.entity_id)
+            | selectattr('state', '==', 'on') | list | count > 0 }}\n{% else %}\n
+            \ true\n{% endif %}\n"
+        - condition: template
+          value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
+            'on') }}\n{% else %}\n  true\n{% endif %}"
+        - condition: template
+          value_template: "{% set entity_ok = ('entity_state_enabled' in night_lights_conditions)
+            and\n  (expand(night_lights_entity_state) | selectattr('state','equalto','on')
+            | list | count > 0) %}\n{% set time_ok = ('time_enabled' in night_lights_conditions)
+            and\n  (now().strftime('%H:%M:%S') >= night_lights_after_time and now().strftime('%H:%M:%S')
+            <= night_lights_before_time) %}\n{% set sun_ok = ('sun_enabled' in night_lights_conditions)
+            and (\n    (not is_state_attr('sun.sun','rising', true) and state_attr('sun.sun','elevation')
+            <= night_lights_sun_elevation | float(90)) or\n    (is_state_attr('sun.sun','rising',
+            true) and state_attr('sun.sun','elevation') <= night_lights_sun_elevation_rising
+            | float(90))\n) %} {% if include_night_lights == 'night_lights_enabled'
+            %}\n  {{ not (entity_ok or time_ok or sun_ok) }}\n{% else %}\n  true\n{%
+            endif %}\n"
+      - condition: and
+        conditions:
+        - condition: template
+          value_template: '{{ include_dynamic_lighting != ''disable_dynamic_lighting''
+            }}'
+        - condition: template
+          value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
+            'on') }}\n{% else %}\n  true\n{% endif %}"
+      - condition: and
+        conditions:
+        - alias: Check if night lights is enabled
+          condition: template
+          value_template: '{{ include_night_lights == ''night_lights_enabled'' }}'
+        - condition: template
+          value_template: "{% if (expand(night_lights.entity_id) | selectattr('domain',
+            'in', ['light','switch']) | list | count > 0) %}\n  {{ expand(night_lights.entity_id)
+            | selectattr('state', '==', 'on') | list | count > 0 }}\n{% else %}\n
+            \ true\n{% endif %}\n"
+        - condition: template
+          value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
+            'on') }}\n{% else %}\n  true\n{% endif %}"
+        - condition: template
+          value_template: "{% set entity_ok = ('entity_state_enabled' in night_lights_conditions)
+            and\n  (expand(night_lights_entity_state) | selectattr('state','equalto','on')
+            | list | count > 0) %}\n{% set time_ok = ('time_enabled' in night_lights_conditions)
+            and\n  (now().strftime('%H:%M:%S') >= night_lights_after_time and now().strftime('%H:%M:%S')
+            <= night_lights_before_time) %}\n{% set sun_ok = ('sun_enabled' in night_lights_conditions)
+            and (\n    (not is_state_attr('sun.sun','rising', true) and state_attr('sun.sun','elevation')
+            <= night_lights_sun_elevation | float(90)) or\n    (is_state_attr('sun.sun','rising',
+            true) and state_attr('sun.sun','elevation') <= night_lights_sun_elevation_rising
+            | float(90))\n) %} {% if include_night_lights == 'night_lights_enabled'
+            %}\n  {{ (entity_ok or time_ok or sun_ok) }}\n{% else %}\n  false\n{%
+            endif %}\n"
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t20
+    - condition: template
+      value_template: '{{ include_ha_restart == ''enable_ha_restart'' }}'
+    - condition: template
+      value_template: '{{ trigger_options_on }}'
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t20
+    - condition: template
+      value_template: '{{ include_ha_restart == ''enable_ha_restart'' }}'
+    - condition: or
+      conditions:
+      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
+        | list | count > 0) }}'
+      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
+        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
+      - condition: template
+        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
+          'on') }}\n{% endif %}"
+      - condition: template
+        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
+          'on') }}\n{% endif %}"
+  - condition: and
+    conditions:
+    - '{{ (''bypass_auto_off_enabled_on'' in include_bypass_auto_off) or (''bypass_auto_off_enabled_off''
+      in include_bypass_auto_off) or (''bypass_auto_off_enabled_stop'' in include_bypass_auto_off)
+      }}'
+    - condition: trigger
+      id: t20
+    - condition: template
+      value_template: '{{ include_ha_restart == ''enable_ha_restart'' }}'
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: !input bypass_lights_on
+        match: any
+        state: 'on'
+      - condition: state
+        entity_id: !input bypass_lights_off
+        match: any
+        state: 'on'
+      - condition: state
+        entity_id: !input bypass_lights_stop
+        match: any
+        state: 'on'
+- condition: or
+  conditions:
+  - '{{ include_bypass == [] }}'
+  - condition: and
+    conditions:
+    - '{{ (''bypass_enabled_turn_on'' in include_bypass) and (''bypass_enabled_turn_off''
+      in include_bypass) and (''bypass_enabled_stop'' in include_bypass) }}'
+    - condition: state
+      entity_id: !input bypass_lights_on
+      state: 'off'
+    - condition: state
+      entity_id: !input bypass_lights_off
+      state: 'off'
+    - condition: state
+      entity_id: !input bypass_lights_stop
+      state: 'off'
+  - condition: and
+    conditions:
+    - '{{ (''bypass_enabled_turn_on'' in include_bypass) and (''bypass_enabled_turn_off''
+      in include_bypass) and (''bypass_enabled_stop'' not in include_bypass) }}'
+    - condition: state
+      entity_id: !input bypass_lights_on
+      state: 'off'
+    - condition: state
+      entity_id: !input bypass_lights_off
+      state: 'off'
+  - condition: and
+    conditions:
+    - '{{ (''bypass_enabled_turn_on'' in include_bypass) and (''bypass_enabled_turn_off''
+      not in include_bypass) and (''bypass_enabled_stop'' in include_bypass) }}'
+    - condition: state
+      entity_id: !input bypass_lights_on
+      state: 'off'
+    - condition: state
+      entity_id: !input bypass_lights_stop
+      state: 'off'
+  - condition: and
+    conditions:
+    - '{{ (''bypass_enabled_turn_on'' not in include_bypass) and (''bypass_enabled_turn_off''
+      in include_bypass) and (''bypass_enabled_stop'' in include_bypass) }}'
+    - condition: state
+      entity_id: !input bypass_lights_off
+      state: 'off'
+    - condition: state
+      entity_id: !input bypass_lights_stop
+      state: 'off'
+  - condition: and
+    conditions:
+    - '{{ (''bypass_enabled_turn_on'' in include_bypass) and (''bypass_enabled_turn_off''
+      not in include_bypass) and (''bypass_enabled_stop'' not in include_bypass) }}'
+    - condition: state
+      entity_id: !input bypass_lights_on
+      state: 'off'
+  - condition: and
+    conditions:
+    - '{{ (''bypass_enabled_turn_on'' not in include_bypass) and (''bypass_enabled_turn_off''
+      in include_bypass) and (''bypass_enabled_stop'' not in include_bypass) }}'
+    - condition: state
+      entity_id: !input bypass_lights_off
+      state: 'off'
+  - condition: and
+    conditions:
+    - '{{ (''bypass_enabled_turn_on'' not in include_bypass) and (''bypass_enabled_turn_off''
+      not in include_bypass) and (''bypass_enabled_stop'' in include_bypass) }}'
+    - condition: state
+      entity_id: !input bypass_lights_stop
+      state: 'off'
+  - condition: trigger
+    id:
+    - t8_on
+    - t8_off
+    - t8_stop
+    - t9_on
+    - t9_off
+    - t9_stop
+    - t20
+- condition: or
+  conditions:
+  - '{{ include_weekdays == ''weekday_disabled'' }}'
+  - condition: and
+    conditions:
+    - condition: time
+      weekday: !input weekday_options
+    - '{{ include_weekdays == ''weekday_enabled'' }}'
+  - condition: trigger
+    id:
+    - t8_on
+    - t8_off
+    - t8_stop
+    - t9_on
+    - t9_off
+    - t9_stop
 actions:
 - choose:
   - alias: Check if night lights are enabled and within conditions
@@ -9087,524 +9608,3 @@ actions:
         action: input_boolean.turn_off
         data:
           entity_id: !input boolean_scenes_scripts
-conditions:
-- condition: or
-  conditions:
-  - condition: and
-    conditions:
-    - '{{ ''entity_on'' in include_entity_state }}'
-    - condition: trigger
-      id: t0
-    - condition: state
-      entity_id: !input entity_input
-      match: any
-      state: 'on'
-  - condition: and
-    conditions:
-    - '{{ ''entity_off'' in include_entity_state }}'
-    - condition: trigger
-      id: t1
-    - condition: state
-      entity_id: !input entity_input
-      match: any
-      state: 'off'
-  - condition: and
-    conditions:
-    - '{{ ''sun_falling'' in include_sun }}'
-    - condition: trigger
-      id: t2
-  - condition: and
-    conditions:
-    - '{{ ''sun_rising'' in include_sun }}'
-    - condition: trigger
-      id: t3
-  - condition: and
-    conditions:
-    - '{{ ''ambient_low'' in include_ambient }}'
-    - condition: trigger
-      id: t4
-  - condition: and
-    conditions:
-    - '{{ ''ambient_high'' in include_ambient }}'
-    - condition: trigger
-      id: t5
-  - condition: and
-    conditions:
-    - '{{ ''time_on'' in include_time }}'
-    - condition: trigger
-      id: t6
-  - condition: and
-    conditions:
-    - '{{ ''time_off'' in include_time }}'
-    - condition: trigger
-      id: t7
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t8_on
-    - '{{ ''bypass_enabled_turn_on'' in include_bypass }}'
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t8_off
-    - '{{ ''bypass_enabled_turn_off'' in include_bypass }}'
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t8_stop
-    - '{{ ''bypass_enabled_stop'' in include_bypass }}'
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t9_on
-    - '{{ ''bypass_enabled_turn_on'' in include_bypass }}'
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t9_off
-    - '{{ ''bypass_enabled_turn_off'' in include_bypass }}'
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t9_stop
-    - '{{ ''bypass_enabled_stop'' in include_bypass }}'
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t10
-    - '{{ include_night_lights == ''night_lights_enabled'' }}'
-    - '{{ ''entity_state_enabled'' in night_lights_conditions }}'
-    - condition: state
-      entity_id: !input night_lights_entity_state
-      match: any
-      state: 'on'
-    - condition: or
-      conditions:
-      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
-        | list | count > 0) }}'
-      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
-        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
-      - condition: template
-        value_template: '{{ ''manage_scripts_crossing_over'' in include_night_light_control
-          }}'
-      - condition: template
-        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
-          'on') }}\n{% endif %}"
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t11
-    - '{{ include_night_lights == ''night_lights_enabled'' }}'
-    - '{{ ''time_enabled'' in night_lights_conditions }}'
-    - condition: or
-      conditions:
-      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
-        | list | count > 0) }}'
-      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
-        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
-      - condition: template
-        value_template: '{{ ''manage_scripts_crossing_over'' in include_night_light_control
-          }}'
-      - condition: template
-        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
-          'on') }}\n{% endif %}"
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t12
-    - '{{ include_night_lights == ''night_lights_enabled'' }}'
-    - '{{ ''sun_enabled'' in night_lights_conditions }}'
-    - condition: or
-      conditions:
-      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
-        | list | count > 0) }}'
-      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
-        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
-      - condition: template
-        value_template: '{{ ''manage_scripts_crossing_over'' in include_night_light_control
-          }}'
-      - condition: template
-        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
-          'on') }}\n{% endif %}"
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t13
-    - '{{ include_night_lights == ''night_lights_enabled'' }}'
-    - '{{ ''entity_state_enabled'' in night_lights_conditions }}'
-    - condition: state
-      entity_id: !input night_lights_entity_state
-      state: 'off'
-    - condition: or
-      conditions:
-      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
-        | list | count > 0) }}'
-      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
-        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
-      - condition: template
-        value_template: '{{ ''manage_scripts_crossing_over'' in include_night_light_control
-          }}'
-      - condition: template
-        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
-          'on') }}\n{% endif %}"
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t14
-    - '{{ include_night_lights == ''night_lights_enabled'' }}'
-    - '{{ ''time_enabled'' in night_lights_conditions }}'
-    - condition: or
-      conditions:
-      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
-        | list | count > 0) }}'
-      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
-        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
-      - condition: template
-        value_template: '{{ ''manage_scripts_crossing_over'' in include_night_light_control
-          }}'
-      - condition: template
-        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
-          'on') }}\n{% endif %}"
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t15
-    - '{{ include_night_lights == ''night_lights_enabled'' }}'
-    - '{{ ''sun_enabled'' in night_lights_conditions }}'
-    - condition: or
-      conditions:
-      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
-        | list | count > 0) }}'
-      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
-        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
-      - condition: template
-        value_template: '{{ ''manage_scripts_crossing_over'' in include_night_light_control
-          }}'
-      - condition: template
-        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
-          'on') }}\n{% endif %}"
-  - condition: and
-    conditions:
-    - condition: trigger
-      id:
-      - t16
-      - t17
-    - condition: template
-      value_template: '{{ include_dynamic_lighting != ''disable_dynamic_lighting''
-        }}'
-    - condition: template
-      value_template: '{{ dynamic_lighting_state_control == ''enable_state_control''
-        }}'
-    - condition: or
-      conditions:
-      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
-        | list | count > 0) }}'
-      - condition: template
-        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
-          'on') }}\n{% endif %}"
-  - condition: and
-    conditions:
-    - condition: template
-      value_template: '{{ ''button_on'' in include_button }}'
-    - condition: trigger
-      id: t18
-    - condition: or
-      conditions:
-      - condition: and
-        conditions:
-        - condition: template
-          value_template: "{% if (expand(light_switch.entity_id) | selectattr('domain',
-            'in', ['light','switch']) | list | count > 0) %}\n  {{ expand(light_switch.entity_id)
-            | selectattr('state', '==', 'on') | list | count == 0 }}\n{% else %}\n
-            \ true\n{% endif %}\n"
-        - condition: template
-          value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
-            'off') }}\n{% else %}\n  true\n{% endif %}"
-        - condition: template
-          value_template: "{% set entity_ok = ('entity_state_enabled' in night_lights_conditions)
-            and\n  (expand(night_lights_entity_state) | selectattr('state','equalto','on')
-            | list | count > 0) %}\n{% set time_ok = ('time_enabled' in night_lights_conditions)
-            and\n  (now().strftime('%H:%M:%S') >= night_lights_after_time and now().strftime('%H:%M:%S')
-            <= night_lights_before_time) %}\n{% set sun_ok = ('sun_enabled' in night_lights_conditions)
-            and (\n    (not is_state_attr('sun.sun','rising', true) and state_attr('sun.sun','elevation')
-            <= night_lights_sun_elevation | float(90)) or\n    (is_state_attr('sun.sun','rising',
-            true) and state_attr('sun.sun','elevation') <= night_lights_sun_elevation_rising
-            | float(90))\n) %} {% if include_night_lights == 'night_lights_enabled'
-            %}\n  {{ not (entity_ok or time_ok or sun_ok) }}\n{% else %}\n  true\n{%
-            endif %}\n"
-      - condition: and
-        conditions:
-        - condition: template
-          value_template: '{{ include_dynamic_lighting != ''disable_dynamic_lighting''
-            }}'
-        - condition: template
-          value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
-            'off') }}\n{% else %}\n  true\n{% endif %}"
-      - condition: and
-        conditions:
-        - alias: Check if night lights is enabled
-          condition: template
-          value_template: '{{ include_night_lights == ''night_lights_enabled'' }}'
-        - condition: template
-          value_template: "{% if (expand(night_lights.entity_id) | selectattr('domain',
-            'in', ['light','switch']) | list | count > 0) %}\n  {{ expand(night_lights.entity_id)
-            | selectattr('state', '==', 'on') | list | count == 0 }}\n{% else %}\n
-            \ true\n{% endif %}\n"
-        - condition: template
-          value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
-            'off') }}\n{% else %}\n  true\n{% endif %}"
-        - condition: template
-          value_template: "{% set entity_ok = ('entity_state_enabled' in night_lights_conditions)
-            and\n  (expand(night_lights_entity_state) | selectattr('state','equalto','on')
-            | list | count > 0) %}\n{% set time_ok = ('time_enabled' in night_lights_conditions)
-            and\n  (now().strftime('%H:%M:%S') >= night_lights_after_time and now().strftime('%H:%M:%S')
-            <= night_lights_before_time) %}\n{% set sun_ok = ('sun_enabled' in night_lights_conditions)
-            and (\n    (not is_state_attr('sun.sun','rising', true) and state_attr('sun.sun','elevation')
-            <= night_lights_sun_elevation | float(90)) or\n    (is_state_attr('sun.sun','rising',
-            true) and state_attr('sun.sun','elevation') <= night_lights_sun_elevation_rising
-            | float(90))\n) %} {% if include_night_lights == 'night_lights_enabled'
-            %}\n  {{ (entity_ok or time_ok or sun_ok) }}\n{% else %}\n  false\n{%
-            endif %}\n"
-  - condition: and
-    conditions:
-    - condition: template
-      value_template: '{{ ''button_off'' in include_button }}'
-    - condition: trigger
-      id: t19
-    - condition: or
-      conditions:
-      - condition: and
-        conditions:
-        - condition: template
-          value_template: "{% if (expand(light_switch.entity_id) | selectattr('domain',
-            'in', ['light','switch']) | list | count > 0) %}\n  {{ expand(light_switch.entity_id)
-            | selectattr('state', '==', 'on') | list | count > 0 }}\n{% else %}\n
-            \ true\n{% endif %}\n"
-        - condition: template
-          value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
-            'on') }}\n{% else %}\n  true\n{% endif %}"
-        - condition: template
-          value_template: "{% set entity_ok = ('entity_state_enabled' in night_lights_conditions)
-            and\n  (expand(night_lights_entity_state) | selectattr('state','equalto','on')
-            | list | count > 0) %}\n{% set time_ok = ('time_enabled' in night_lights_conditions)
-            and\n  (now().strftime('%H:%M:%S') >= night_lights_after_time and now().strftime('%H:%M:%S')
-            <= night_lights_before_time) %}\n{% set sun_ok = ('sun_enabled' in night_lights_conditions)
-            and (\n    (not is_state_attr('sun.sun','rising', true) and state_attr('sun.sun','elevation')
-            <= night_lights_sun_elevation | float(90)) or\n    (is_state_attr('sun.sun','rising',
-            true) and state_attr('sun.sun','elevation') <= night_lights_sun_elevation_rising
-            | float(90))\n) %} {% if include_night_lights == 'night_lights_enabled'
-            %}\n  {{ not (entity_ok or time_ok or sun_ok) }}\n{% else %}\n  true\n{%
-            endif %}\n"
-      - condition: and
-        conditions:
-        - condition: template
-          value_template: '{{ include_dynamic_lighting != ''disable_dynamic_lighting''
-            }}'
-        - condition: template
-          value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
-            'on') }}\n{% else %}\n  true\n{% endif %}"
-      - condition: and
-        conditions:
-        - alias: Check if night lights is enabled
-          condition: template
-          value_template: '{{ include_night_lights == ''night_lights_enabled'' }}'
-        - condition: template
-          value_template: "{% if (expand(night_lights.entity_id) | selectattr('domain',
-            'in', ['light','switch']) | list | count > 0) %}\n  {{ expand(night_lights.entity_id)
-            | selectattr('state', '==', 'on') | list | count > 0 }}\n{% else %}\n
-            \ true\n{% endif %}\n"
-        - condition: template
-          value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
-            'on') }}\n{% else %}\n  true\n{% endif %}"
-        - condition: template
-          value_template: "{% set entity_ok = ('entity_state_enabled' in night_lights_conditions)
-            and\n  (expand(night_lights_entity_state) | selectattr('state','equalto','on')
-            | list | count > 0) %}\n{% set time_ok = ('time_enabled' in night_lights_conditions)
-            and\n  (now().strftime('%H:%M:%S') >= night_lights_after_time and now().strftime('%H:%M:%S')
-            <= night_lights_before_time) %}\n{% set sun_ok = ('sun_enabled' in night_lights_conditions)
-            and (\n    (not is_state_attr('sun.sun','rising', true) and state_attr('sun.sun','elevation')
-            <= night_lights_sun_elevation | float(90)) or\n    (is_state_attr('sun.sun','rising',
-            true) and state_attr('sun.sun','elevation') <= night_lights_sun_elevation_rising
-            | float(90))\n) %} {% if include_night_lights == 'night_lights_enabled'
-            %}\n  {{ (entity_ok or time_ok or sun_ok) }}\n{% else %}\n  false\n{%
-            endif %}\n"
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t20
-    - condition: template
-      value_template: '{{ include_ha_restart == ''enable_ha_restart'' }}'
-    - condition: template
-      value_template: '{{ trigger_options_on }}'
-  - condition: and
-    conditions:
-    - condition: trigger
-      id: t20
-    - condition: template
-      value_template: '{{ include_ha_restart == ''enable_ha_restart'' }}'
-    - condition: or
-      conditions:
-      - '{{ (expand(light_switch.entity_id) | selectattr(''state'', ''=='', ''on'')
-        | list | count > 0) }}'
-      - '{{ (include_night_lights == ''night_lights_enabled'') and (expand(night_lights.entity_id)
-        | selectattr(''state'', ''=='', ''on'') | list | count > 0) }}'
-      - condition: template
-        value_template: "{% if boolean_scenes_scripts != [] %}\n  {{ is_state(boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if night_boolean_scenes_scripts != [] %}\n  {{ is_state(night_boolean_scenes_scripts,
-          'on') }}\n{% endif %}"
-      - condition: template
-        value_template: "{% if dynamic_lighting_boolean != [] %}\n  {{ is_state(dynamic_lighting_boolean,
-          'on') }}\n{% endif %}"
-  - condition: and
-    conditions:
-    - '{{ (''bypass_auto_off_enabled_on'' in include_bypass_auto_off) or (''bypass_auto_off_enabled_off''
-      in include_bypass_auto_off) or (''bypass_auto_off_enabled_stop'' in include_bypass_auto_off)
-      }}'
-    - condition: trigger
-      id: t20
-    - condition: template
-      value_template: '{{ include_ha_restart == ''enable_ha_restart'' }}'
-    - condition: or
-      conditions:
-      - condition: state
-        entity_id: !input bypass_lights_on
-        match: any
-        state: 'on'
-      - condition: state
-        entity_id: !input bypass_lights_off
-        match: any
-        state: 'on'
-      - condition: state
-        entity_id: !input bypass_lights_stop
-        match: any
-        state: 'on'
-- condition: or
-  conditions:
-  - '{{ include_bypass == [] }}'
-  - condition: and
-    conditions:
-    - '{{ (''bypass_enabled_turn_on'' in include_bypass) and (''bypass_enabled_turn_off''
-      in include_bypass) and (''bypass_enabled_stop'' in include_bypass) }}'
-    - condition: state
-      entity_id: !input bypass_lights_on
-      state: 'off'
-    - condition: state
-      entity_id: !input bypass_lights_off
-      state: 'off'
-    - condition: state
-      entity_id: !input bypass_lights_stop
-      state: 'off'
-  - condition: and
-    conditions:
-    - '{{ (''bypass_enabled_turn_on'' in include_bypass) and (''bypass_enabled_turn_off''
-      in include_bypass) and (''bypass_enabled_stop'' not in include_bypass) }}'
-    - condition: state
-      entity_id: !input bypass_lights_on
-      state: 'off'
-    - condition: state
-      entity_id: !input bypass_lights_off
-      state: 'off'
-  - condition: and
-    conditions:
-    - '{{ (''bypass_enabled_turn_on'' in include_bypass) and (''bypass_enabled_turn_off''
-      not in include_bypass) and (''bypass_enabled_stop'' in include_bypass) }}'
-    - condition: state
-      entity_id: !input bypass_lights_on
-      state: 'off'
-    - condition: state
-      entity_id: !input bypass_lights_stop
-      state: 'off'
-  - condition: and
-    conditions:
-    - '{{ (''bypass_enabled_turn_on'' not in include_bypass) and (''bypass_enabled_turn_off''
-      in include_bypass) and (''bypass_enabled_stop'' in include_bypass) }}'
-    - condition: state
-      entity_id: !input bypass_lights_off
-      state: 'off'
-    - condition: state
-      entity_id: !input bypass_lights_stop
-      state: 'off'
-  - condition: and
-    conditions:
-    - '{{ (''bypass_enabled_turn_on'' in include_bypass) and (''bypass_enabled_turn_off''
-      not in include_bypass) and (''bypass_enabled_stop'' not in include_bypass) }}'
-    - condition: state
-      entity_id: !input bypass_lights_on
-      state: 'off'
-  - condition: and
-    conditions:
-    - '{{ (''bypass_enabled_turn_on'' not in include_bypass) and (''bypass_enabled_turn_off''
-      in include_bypass) and (''bypass_enabled_stop'' not in include_bypass) }}'
-    - condition: state
-      entity_id: !input bypass_lights_off
-      state: 'off'
-  - condition: and
-    conditions:
-    - '{{ (''bypass_enabled_turn_on'' not in include_bypass) and (''bypass_enabled_turn_off''
-      not in include_bypass) and (''bypass_enabled_stop'' in include_bypass) }}'
-    - condition: state
-      entity_id: !input bypass_lights_stop
-      state: 'off'
-  - condition: trigger
-    id:
-    - t8_on
-    - t8_off
-    - t8_stop
-    - t9_on
-    - t9_off
-    - t9_stop
-    - t20
-- condition: or
-  conditions:
-  - '{{ include_weekdays == ''weekday_disabled'' }}'
-  - condition: and
-    conditions:
-    - condition: time
-      weekday: !input weekday_options
-    - '{{ include_weekdays == ''weekday_enabled'' }}'
-  - condition: trigger
-    id:
-    - t8_on
-    - t8_off
-    - t8_stop
-    - t9_on
-    - t9_off
-    - t9_stop

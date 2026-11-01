@@ -23,8 +23,8 @@ blueprint:
           - restart
           - queued
           - parallel
-          custom_value: false
           multiple: false
+          custom_value: false
           sort: false
     mode_max:
       name: Mode Max (ignored by Single and Restart Modes)
@@ -34,8 +34,8 @@ blueprint:
         number:
           min: 1.0
           max: 15.0
-          mode: slider
           step: 1.0
+          mode: slider
     top_on:
       name: Top (On) Button Pressed
       description: Execute when TOP button is PRESSED
@@ -97,9 +97,7 @@ blueprint:
       selector:
         action: {}
   source_url: https://raw.githubusercontent.com/stephack/Hassio/main/blueprints/core-pico.yaml
-mode: !input auto_mode
-max: !input mode_max
-triggers:
+trigger:
 - platform: device
   device_id: !input pico_remote
   domain: lutron_caseta
@@ -150,7 +148,8 @@ triggers:
   domain: lutron_caseta
   type: release
   subtype: 'off'
-actions:
+condition: []
+action:
 - choose:
   - conditions: '{{ trigger.event.data.action == "press" }}'
     sequence:
@@ -179,4 +178,5 @@ actions:
       - conditions: '{{ trigger.event.data.button_number == 4 }}'
         sequence: !input bottom_off_release
   default: []
-conditions: []
+mode: !input auto_mode
+max: !input mode_max
